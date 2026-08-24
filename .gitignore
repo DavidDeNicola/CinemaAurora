@@ -19,6 +19,33 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# virtual machine crash logs
 hs_err_pid*
 replay_pid*
+
+# --- ANGULAR / NODE.JS ---
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production Build output
+/dist
+/tmp
+/out-tsc
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
