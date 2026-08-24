@@ -1,0 +1,149 @@
+<main class="cinema-page">
+    <section class="content-section">
+        <div class="dashboard-layout">
+            <aside class="form-sidebar">
+                <h2 class="form-title">Gestione Film</h2>
+                <p class="sidebar-description">
+                    Aggiungi nuovi titoli e tieni ordinato il catalogo disponibile in sala.
+                </p>
+
+                @if (filmInserito) {
+                    <div class="alert-success">
+                        <span class="alert-icon">OK</span>
+                        <span>Film inserito con successo.</span>
+                    </div>
+                }
+
+                <a class="btn btn-primary action-button" routerLink="/inserisci-film">+ Nuovo film</a>
+            </aside>
+
+            <main>
+                <div class="section-header">
+                    <div>
+                        <h2>Catalogo Film</h2>
+                        <p>Lista di tutti i film registrati a sistema.</p>
+                    </div>
+                </div>
+
+                <div class="schedule">
+                    @for (film of films; track film.id) {
+                        <article class="schedule-card schedule-row-card">
+                            <div class="movie-info-block">
+                                <span class="tag schedule-badge-id">ID: #{{ film.id }}</span>
+                                <h3 class="schedule-title">{{ film.titolo }}</h3>
+                                <p class="movie-meta schedule-info-meta">
+                                    <span>{{ film.durata }} min</span>
+                                    <span class="meta-separator">•</span>
+                                    <span>{{ film.nomeGeneri }}</span>
+                                </p>
+                            </div>
+
+                            <div class="schedule-actions-box">
+                                <div class="time-list-static">
+                                    <span class="time featured">{{ film.durata }} min</span>
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary btn-icon-edit" (click)="apriModifica(film)">
+                                        Modifica
+                                    </button>
+                                    <button class="btn btn-secondary btn-icon-delete" (click)="elimina(film.id)">
+                                        Elimina
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    } @empty {
+                        <article class="schedule-card empty-state-card">
+                            <h3 class="schedule-title">Nessun film disponibile</h3>
+                            <p class="movie-meta schedule-info-meta">Aggiungi un nuovo film per iniziare a popolare il catalogo.</p>
+                        </article>
+                    }
+                </div>
+            </main>
+        </div>
+    </section>
+</main>
+
+<!-- ── Modal Modifica Film ───────────────────────────────────────────── -->
+@if (filmInModifica) {
+    <div class="modal-overlay" (click)="chiudiModifica()">
+        <div class="modal-panel" (click)="$event.stopPropagation()">
+
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">Modifica Film</h2>
+                    <p class="modal-subtitle">ID #{{ filmInModifica.id }} — {{ filmInModifica.titolo }}</p>
+                </div>
+                <button class="modal-close" (click)="chiudiModifica()" aria-label="Chiudi">✕</button>
+            </div>
+
+            @if (erroreModifica) {
+                <div class="alert-error">{{ erroreModifica }}</div>
+            }
+
+            <form [formGroup]="formModifica" (ngSubmit)="salvaModifica()" class="modal-form">
+
+                <div class="form-group">
+                    <label class="form-label">Titolo <span class="required">*</span></label>
+                    <input type="text" class="form-input" formControlName="titolo"
+                           [class.input-error]="formModifica.controls.titolo.invalid && formModifica.controls.titolo.touched">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Descrizione <span class="required">*</span></label>
+                    <textarea class="form-input form-textarea" formControlName="descrizione"
+                              [class.input-error]="formModifica.controls.descrizione.invalid && formModifica.controls.descrizione.touched"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Durata (min) <span class="required">*</span></label>
+                        <input type="number" class="form-input" formControlName="durata" min="1"
+                               [class.input-error]="formModifica.controls.durata.invalid && formModifica.controls.durata.touched">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Attori <span class="required">*</span></label>
+                        <input type="text" class="form-input" formControlName="attori"
+                               [class.input-error]="formModifica.controls.attori.invalid && formModifica.controls.attori.touched">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">URL locandina</label>
+                    <input type="url" class="form-input" formControlName="urlLocandina"
+                           [class.input-error]="formModifica.controls.urlLocandina.invalid && formModifica.controls.urlLocandina.touched">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Generi <span class="required">*</span></label>
+                    <div class="genre-selector">
+                        @for (genere of generi; track genere.id) {
+                            <button
+                                type="button"
+                                class="genre-option"
+                                [class.selected]="isGenereSelezionato(genere.id)"
+                                (click)="toggleGenere(genere.id)">
+                                {{ genere.nome }}
+                            </button>
+                        }
+                    </div>
+                    <small class="field-hint">Clicca sui generi per aggiungerli o rimuoverli.</small>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="chiudiModifica()">
+                        Annulla
+                    </button>
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="modificaInCorso">
+                        {{ modificaInCorso ? 'SALVATAGGIO...' : 'SALVA MODIFICHE' }}
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+}

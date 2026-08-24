@@ -1,0 +1,142 @@
+<main class="page">
+  <section class="page-hero">
+    <span class="tag">Programmazione</span>
+    <h1>Scegli lo spettacolo della tua serata.</h1>
+    <p>Filtra per data, seleziona un orario e prenota il posto per il film che vuoi vedere.</p>
+  </section>
+
+  <section class="toolbar" aria-label="Filtro data spettacoli">
+    <label>
+      <span>Data di proiezione</span>
+      <input
+        type="date"
+        [(ngModel)]="dataSelezionata"
+        (change)="filtraPerData()"
+        [min]="oggi"
+      >
+    </label>
+
+    <div class="toolbar-actions">
+      <button type="button" class="btn btn-secondary" (click)="filtraOggi()">Oggi</button>
+      <button type="button" class="btn btn-ghost" (click)="resetFiltro()" [disabled]="!dataSelezionata">
+        Tutte
+      </button>
+    </div>
+  </section>
+
+  @if (loading) {
+    <section class="empty-state">
+      <h2>Caricamento spettacoli...</h2>
+      <p>Sto recuperando la programmazione dal backend.</p>
+    </section>
+  }
+
+  @if (errore) {
+    <section class="empty-state error">
+      <h2>Errore</h2>
+      <p>{{ errore }}</p>
+    </section>
+  }
+
+  @if (messaggio) {
+    <section class="empty-state success">
+      <h2>Prenotazione</h2>
+      <p>{{ messaggio }}</p>
+    </section>
+  }
+
+  @if (!loading && spettacoliFiltrati.length === 0 && !errore) {
+    <section class="empty-state">
+      <h2>Nessuno spettacolo trovato</h2>
+      <p>Modifica la data per visualizzare altri spettacoli.</p>
+    </section>
+  }
+
+  @if (!loading && spettacoliFiltrati.length > 0) {
+    @for (gruppo of gruppiPerData; track gruppo.data) {
+      <section class="day-section">
+        <header class="day-header">
+          <div class="date-badge">
+            <span>{{ gruppo.data | date:'dd' }}</span>
+            <small>{{ gruppo.data | date:'MMM' : '' : 'it' }}</small>
+          </div>
+          <div>
+            <h2>{{ formatData(gruppo.data) | titlecase }}</h2>
+            <p>{{ gruppo.filmsDelGiorno.length }} film in programma</p>
+          </div>
+        </header>
+
+        <div class="show-grid">
+          @for (entry of gruppo.filmsDelGiorno; track entry.filmKey) {
+            <article class="show-card">
+              <div class="poster">
+                @if (entry.film.urlLocandina) {
+                  <img [src]="entry.film.urlLocandina" [alt]="'Locandina ' + entry.film.titolo">
+                } @else {
+                  <span>POSTER</span>
+                }
+              </div>
+
+              <div class="card-body">
+                <p class="eyebrow">{{ generiLabel(entry.film) }}</p>
+                <h3>{{ entry.film.titolo }}</h3>
+
+                <p class="movie-meta">
+                  @if (entry.film.durata) {
+                    <span>{{ durataLabel(entry.film.durata) }}</span>
+                  }
+                  @if (entry.film.attori) {
+                    <span>{{ entry.film.attori }}</span>
+                  }
+                </p>
+
+                <div class="time-area" aria-label="Orari disponibili">
+                  @for (s of entry.spettacoli; track s.id) {
+                    <button
+                      type="button"
+                      class="time-chip"
+                      [class.active]="isOrarioSelezionato(gruppo.data, entry.filmKey, s)"
+                      [disabled]="s.postiRimanenti === 0"
+                      (click)="selezionaSpettacolo(gruppo.data, entry.filmKey, s)"
+                      [title]="s.nomeSala + ' - ' + (s.postiRimanenti === 0 ? 'esaurito' : s.postiRimanenti + ' posti')"
+                    >
+                      {{ formatOrario(s.oraInizio) }} - {{ formatOrario(s.oraFine) }}
+                    </button>
+                  }
+                </div>
+
+                  @if (spettacoloSelezionato(gruppo.data, entry.filmKey); as selezionato) {
+                      <p class="selected-info">
+                          {{ selezionato.nomeSala }}
+                      </p>
+
+
+
+                      <div class="card-actions mb-3">
+                          <button
+                                  type="button"
+                                  class="btn btn-primary"
+                                  [disabled]="isStaff"
+                                  (click)="prenota(entry.film, selezionato)"
+
+                          >
+                              Prenota
+                          </button>
+                      </div>
+                  }
+
+                  @if (entry.film.id) {
+                    <a [routerLink]="['/dettaglio-film', entry.film.id]" class="btn btn-outline">
+                      Dettaglio film
+                    </a>
+                  } @else {
+                    <button type="button" class="btn btn-outline" disabled>Dettaglio film</button>
+                  }
+                </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  }
+</main>

@@ -1,0 +1,51 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 12px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-width textarea {
+    height: 25vh;
+    max-height: 300px;
+    min-height: 120px;
+    overflow-y: auto;
+    resize: none;
+}
+/* Bottone Annulla*/
+button[mat-button] {
+    color: #B3B3B3 !important;
+    font-weight: 700;
+}
+button[mat-button]:hover {
+    color: #FFFFFF !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+/* Bottone Invia*/
+button[mat-raised-button] {
+    background-color: #E50914 !important;
+    color: #FFFFFF !important;
+    font-weight: 700;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+button[mat-raised-button]:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+mat-form-field {
+    --mdc-outlined-text-field-focus-outline-color: #E50914;
+    --mat-form-field-focus-label-text-color: #E50914;
+    --mdc-outlined-text-field-focus-outline-width: 2px;
+    --mdc-outlined-text-field-label-text-color: #B3B3B3;
+
+}

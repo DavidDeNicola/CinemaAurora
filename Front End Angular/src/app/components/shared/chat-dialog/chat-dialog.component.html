@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Invia un messaggio allo staff</h2>
+<form (ngSubmit)="onSubmit()" [formGroup]="chatForm">
+<mat-dialog-content>
+    <div class="form-container">
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Oggetto</mat-label>
+            <input formControlName="oggetto" matInput placeholder="Inserisci l'oggetto del ticket...">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Messaggio</mat-label>
+            <textarea formControlName="messaggio" matInput rows="4" placeholder="Scrivi qui il tuo messaggio..."></textarea>
+        </mat-form-field>
+
+    </div>
+    {{dialogMessage}}
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annulla</button>
+    <button mat-raised-button color="primary" mat-dialog-close type="submit">Invia</button>
+</mat-dialog-actions>
+
+</form>

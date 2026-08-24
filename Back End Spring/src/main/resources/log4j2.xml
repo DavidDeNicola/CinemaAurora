@@ -1,0 +1,35 @@
+<Configuration status="WARN">
+    <Properties>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger - %msg%n
+        </Property>
+        <Property name = "LOG_FOLDER_PATH">app-logs
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <RollingFile name="FileAppenderSql"
+                     fileName="${LOG_FOLDER_PATH}/app.log"
+                     filepattern="${LOG_FOLDER_PATH}/app-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5k"/>
+            </Policies>
+        </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <AsyncLogger name="org.hibernate.SQL" level="DEBUG">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileAppenderSql"/>
+        </AsyncLogger>
+        <AsyncLogger name="org.elis.movieexplorer" level="DEBUG" additivity="false">
+            <AppenderRef ref="Console"/>
+        </AsyncLogger>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

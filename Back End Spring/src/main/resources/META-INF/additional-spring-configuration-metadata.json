@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "service.impl",
+  "type": "java.lang.String",
+  "description": "Definizione di implementazione JPA o InMemory"
+}]}

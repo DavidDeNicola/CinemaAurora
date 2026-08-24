@@ -1,0 +1,101 @@
+:host {
+    display: block;
+    height: 100%;
+}
+
+
+.dashboard-container {
+    height: 100%;
+    width: 100%;
+    background: transparent !important;
+}
+.chat-header {
+    padding: 16px;
+    width: 80px;
+}
+
+.sidebar {
+    background: transparent !important;
+    border-right: 1px solid var(--border) !important;
+    width: fit-content !important;
+    box-sizing: border-box;
+    padding-top: 24px;
+
+    position: sticky !important;
+    height: calc(100vh - 70px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.sidebar-brand span {
+    color: var(--primary);
+}
+
+.sidebar-section-label {
+    padding: 0 20px 8px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+.sidebar .mat-mdc-list-item {
+    border-radius: 20px !important;
+    margin: 2px 2px !important;
+    height: 44px !important;
+    transition: background 0.15s ease, color 0.15s ease !important;
+}
+
+.sidebar .mat-mdc-list-item,
+.sidebar .mat-mdc-list-item .mdc-list-item__primary-text,
+.sidebar .mat-mdc-list-item .mat-mdc-list-item-content {
+    color: var(--secondary) !important;
+}
+
+.sidebar .mat-mdc-list-item:hover {
+    background-color: var(--surface) !important;
+}
+
+.sidebar .mat-mdc-list-item:hover,
+.sidebar .mat-mdc-list-item:hover .mdc-list-item__primary-text {
+    color: var(--text) !important;
+}
+
+.sidebar .active-link {
+    background-color: var(--primary) !important;
+}
+
+.sidebar .active-link,
+.sidebar .active-link .mdc-list-item__primary-text {
+    color: var(--text) !important;
+}
+
+.assistance-link-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+}
+
+.sidebar-notification-dot {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 1.5px solid #1a1a1a;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.18);
+    pointer-events: none;
+}
+
+.dashboard-content {
+    background: transparent !important;
+    width: calc(100% - 240px) !important;
+}
+
+.mat-drawer-side {
+    border-right: none !important;
+}

@@ -1,0 +1,93 @@
+import { Routes } from '@angular/router';
+import {HomeComponent} from './components/shared/home/home.component';
+import {PageNotFoundComponent} from './components/shared/page-not-found/page-not-found.component';
+import {ListaFilmComponent} from './components/shared/lista-film/lista-film.component';
+import {DettaglioFilmComponent} from './components/shared/dettaglio-film/dettaglio-film.component';
+import {GestioneFilmComponent} from "./components/film/gestione-film/gestione-film.component";
+import {InserisciFilmComponent} from "./components/film/inserisci-film/inserisci-film.component";
+import {GestioneGenereComponent} from "./components/film/gestione-generi/gestione-generi.component";
+import {RegistrazioneComponent} from "./components/shared/registrazione/registrazione.component";
+import {LoginComponent} from "./components/shared/login/login.component";
+import {ListaSpettacoliComponent} from "./components/shared/lista-spettacoli/lista-spettacoli.component";
+import {ForgotPasswordComponent} from "./components/shared/forgot-password/forgot-password.component";
+import {ResetPasswordComponent} from "./components/shared/reset-password/reset-password.component";
+import {ProfiloComponent} from "./components/loggato/profilo/profilo.component";
+import {staffGuard} from "./guards/staff.guard";
+import {authGuard} from "./guards/auth.guard";
+import {DashboardComponent} from "./components/loggato/dashboard/dashboard.component";
+import {CreaStaffComponent} from "./components/superadmin/crea-staff/crea-staff.component";
+import {adminGuard} from "./guards/admin.guard";
+import { BigliettiUtenteComponent } from "./components/staff/biglietti-utente/biglietti-utente.component";
+import { GestioneSpettacoliComponent } from "./components/staff/gestione-spettacoli/gestione-spettacoli.component";
+import { RicercaComponent } from "./components/staff/ricerca/ricerca.component";
+import {IMieiBigliettiComponent} from "./components/cliente/imiei-biglietti/imiei-biglietti.component";
+import {
+  chatResolver,
+  dettaglioFilmResolver,
+  filmListResolver, gestioneFilmResolver, gestioneGeneriResolver, gestioneSalaResolver, gestioneSpettacoliResolver,
+  homeResolver, iMieiBigliettiResolver,
+  inserisciFilmResolver,
+  listaSpettacoliResolver, salaResolver
+} from "./app.resolver";
+import {StatisticheComponent} from "./components/superadmin/statistiche/statistiche.component";
+import {FaqSectionComponent} from "./components/shared/faq/faq.component";
+import {ChatDashboardComponent} from "./components/shared/chat-dashboard/chat-dashboard.component";
+import {GestioneSalaComponent} from "./components/staff/gestione-sala/gestione-sala.component";
+import {AcquistoBigliettoComponent} from "./components/shared/acquisto-biglietto/acquisto-biglietto.component";
+import {chatAccessGuard} from "./guards/chat-access.guard";
+
+export const routes: Routes = [
+  {path: '',pathMatch: 'full', redirectTo: 'home'},
+  {path: 'home', title: 'HomePage', component: HomeComponent ,  resolve: { dati: homeResolver } },
+  {path:'faq', title:'FAQ',component:FaqSectionComponent},
+  {path: 'lista-film', title: 'Lista film', component: ListaFilmComponent, resolve: { films: filmListResolver }   },
+  {path: 'dettaglio-film/:id', title: 'Dettaglio film', component: DettaglioFilmComponent, resolve: { dati: dettaglioFilmResolver }  },
+  { path: 'inserisci-film', title: 'Inserisci film', component: InserisciFilmComponent, canActivate: [staffGuard], resolve: { generi: inserisciFilmResolver }},
+  { path: 'login', title: 'Login', component: LoginComponent  },
+  { path: 'registrazione', title: 'Registrazione', component: RegistrazioneComponent },
+  { path: 'lista-spettacoli', title: 'Lista Spettacoli', component: ListaSpettacoliComponent , resolve: { dati: listaSpettacoliResolver }  },
+  { path: 'password-dimenticata', title: 'Password dimenticata', component: ForgotPasswordComponent },
+  { path: 'password-reset', title: 'Password reset', component: ResetPasswordComponent },
+  { path: 'acquista-biglietto', title: 'Acquista biglietto', component: AcquistoBigliettoComponent, resolve:{sala: salaResolver} },
+  {
+    path: '',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+    children: [
+      { path: 'profilo', component: ProfiloComponent },
+      { path: 'gestione-film', component: GestioneFilmComponent, resolve: { films: gestioneFilmResolver }  },
+      { path: 'gestione-generi', title: 'Gestione generi', component: GestioneGenereComponent , canActivate: [staffGuard], resolve: { generi: gestioneGeneriResolver }},
+      { path: 'gestione-film', title: 'Gestione film', component: GestioneFilmComponent , canActivate: [staffGuard] },
+      { path: 'gestione-sala', title: 'Gestione sala', component: GestioneSalaComponent, canActivate: [staffGuard], resolve: { sale: gestioneSalaResolver } },
+      { path: 'crea-staff', title: 'Crea staff', component: CreaStaffComponent , canActivate: [adminGuard] },
+      { path: 'assistenza-ticket', title: 'Assistenza Ticket', component: ChatDashboardComponent , canActivate: [chatAccessGuard], resolve: { chats: chatResolver }, runGuardsAndResolvers: 'always'},
+      {
+        path: 'biglietti-utente', title: 'Biglietti Utente', component:BigliettiUtenteComponent,canActivate: [staffGuard]},
+      {
+        path: 'gestione-spettacoli',
+        title: 'Gestione Spettacoli',
+     component:GestioneSpettacoliComponent,canActivate: [staffGuard], resolve: { dati: gestioneSpettacoliResolver }
+      },
+      {
+        path: 'ricerca',
+        title: 'Ricerca Catalogo',
+        component:RicercaComponent,canActivate: [staffGuard],
+      },
+      {
+        path: 'statistiche',
+        component: StatisticheComponent,
+        canActivate: [adminGuard]
+      },
+      {
+        path: 'i-miei-biglietti',
+        title: 'I miei biglietti',
+        component:      IMieiBigliettiComponent
+        ,canActivate: [authGuard],  resolve: { dati: iMieiBigliettiResolver }
+      },
+    ]
+  },
+  { path: 'staff', loadComponent: () => import('./components/staff/staff-wrapper/staff-wrapper.component').then(m => m.StaffWrapperComponent)
+    ,loadChildren: () => import('./routes/staff.routes').then(m => m.staffRoutes) },
+
+  {path: '**', title: 'Pagina non trovata', component: PageNotFoundComponent}
+];

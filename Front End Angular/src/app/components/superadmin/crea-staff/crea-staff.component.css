@@ -1,0 +1,250 @@
+:host {
+    --background: #121212;
+    --surface: #1e1e1e;
+    --primary: #e50914;
+    --secondary: #b3b3b3;
+    --text: #ffffff;
+    --border: #2a2a2a;
+    display: block;
+    min-height: 100vh;
+    background: transparent;
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.admin-staff-page {
+    min-height: 100vh;
+    background: transparent;
+    color: var(--text);
+}
+
+.admin-staff-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    box-sizing: border-box;
+}
+
+.admin-staff-layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+}
+
+.admin-staff-panel,
+.admin-staff-card {
+    background: var(--surface, #1e1e1e);
+    border: 1px solid var(--border, #2a2a2a);
+    border-radius: 16px;
+}
+
+.admin-staff-panel {
+    padding: 32px;
+}
+
+.admin-staff-title {
+    margin: 0 0 16px;
+    color: var(--primary, #e50914);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.admin-staff-helper {
+    margin: 0 0 24px;
+    color: var(--secondary, #b3b3b3);
+    line-height: 1.6;
+}
+
+.admin-status-banner {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border, #2a2a2a);
+    line-height: 1.5;
+}
+
+.admin-error-banner {
+    background: rgba(229, 9, 20, 0.14);
+    border-color: rgba(229, 9, 20, 0.35);
+    color: #ffd7da;
+}
+
+.admin-success-banner {
+    background: rgba(31, 143, 82, 0.16);
+    border-color: rgba(31, 143, 82, 0.35);
+    color: #d7ffea;
+}
+
+.admin-form-group {
+    margin-bottom: 20px;
+}
+
+.admin-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--secondary, #b3b3b3);
+    font-size: 0.85rem;
+}
+
+.admin-form-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    background: var(--background, #121212);
+    border: 1px solid var(--border, #2a2a2a);
+    border-radius: 8px;
+    color: var(--text, #ffffff);
+    box-sizing: border-box;
+}
+
+.admin-form-input:focus {
+    outline: none;
+    border-color: var(--primary, #e50914);
+}
+
+.admin-form-input::placeholder {
+    color: #7f8791;
+}
+
+.admin-primary-button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px 24px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--primary, #e50914);
+    color: var(--text, #ffffff);
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.admin-primary-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.admin-primary-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.admin-section-header {
+    margin-bottom: 24px;
+}
+
+.admin-section-header h2 {
+    margin: 0 0 8px;
+    color: var(--text, #ffffff);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.admin-section-header p {
+    margin: 0;
+    color: var(--secondary, #b3b3b3);
+}
+
+.admin-staff-list {
+    display: grid;
+    gap: 24px;
+}
+
+.admin-staff-card {
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.admin-tag {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(229, 9, 20, 0.15);
+    color: var(--primary, #e50914);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.admin-staff-card h3 {
+    margin: 8px 0;
+    color: var(--text, #ffffff);
+    font-size: 1.8rem;
+    line-height: 1.2;
+}
+
+.admin-staff-card p {
+    margin: 0;
+    color: var(--secondary, #b3b3b3);
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.admin-staff-card-content {
+    min-width: 0;
+}
+
+.admin-delete-button {
+    flex: 0 0 auto;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--primary, #e50914);
+    background: transparent;
+    color: var(--primary, #e50914);
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.admin-delete-button:hover {
+    background: rgba(229, 9, 20, 0.14);
+    color: var(--text, #ffffff);
+    transform: translateY(-2px);
+}
+
+.admin-delete-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.admin-empty-card h3 {
+    margin-top: 0;
+}
+
+@media (max-width: 992px) {
+    .admin-staff-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-staff-section {
+        padding: 32px 16px;
+    }
+
+    .admin-staff-panel,
+    .admin-staff-card {
+        padding: 24px;
+    }
+
+    .admin-staff-card h3,
+    .admin-section-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .admin-staff-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .admin-delete-button {
+        width: 100%;
+    }
+}

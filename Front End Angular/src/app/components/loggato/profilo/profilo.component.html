@@ -1,0 +1,67 @@
+<div class="profilo-page">
+
+    <div class="page-title">Il mio profilo</div>
+
+    <div class="user-header">
+        <div class="user-avatar">
+            <i class="bi bi-person-fill"></i>
+        </div>
+        <div>
+            <div class="user-email">{{ email }}</div>
+            <span class="user-role-badge">{{ ruolo }}</span>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-title">
+            <i class="bi bi-shield-lock"></i>
+            Cambia password
+        </div>
+        <div class="section-subtitle">Aggiorna la password del tuo account</div>
+
+        @if (successo) {
+            <div class="alert-ok">
+                <i class="bi bi-check-circle-fill"></i> Password aggiornata con successo
+            </div>
+        }
+        @if (errore) {
+            <div class="alert-err">
+                <i class="bi bi-exclamation-circle-fill"></i> {{ errore }}
+            </div>
+        }
+
+        <div class="field-group">
+            <label>Password attuale</label>
+            <div class="field-input">
+                <input [type]="mostraVecchia ? 'text' : 'password'"
+                       [(ngModel)]="dto.passwordVecchia"
+                       placeholder="••••••••" />
+                <button (click)="mostraVecchia = !mostraVecchia">
+                    <i class="bi" [class.bi-eye]="!mostraVecchia" [class.bi-eye-slash]="mostraVecchia"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>Nuova password</label>
+            <div class="field-input">
+                <input [type]="mostraNuova ? 'text' : 'password'"
+                       [(ngModel)]="dto.passwordNuova"
+                       placeholder="••••••••" />
+                <button (click)="mostraNuova = !mostraNuova">
+                    <i class="bi" [class.bi-eye]="!mostraNuova" [class.bi-eye-slash]="mostraNuova"></i>
+                </button>
+            </div>
+        </div>
+
+        <button class="btn-save" (click)="cambiaPassword()" [disabled]="loading">
+            @if (loading) {
+                <span class="spinner-border spinner-border-sm"></span> Salvataggio...
+            } @else {
+                <i class="bi bi-floppy"></i> Salva password
+            }
+        </button>
+    </div>
+
+
+</div>

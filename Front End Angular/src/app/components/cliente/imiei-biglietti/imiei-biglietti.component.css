@@ -1,0 +1,192 @@
+:host {
+    --background: #121212;
+    --surface: #1e1e1e;
+    --primary: #e50914;
+    --secondary: #b3b3b3;
+    --text: #ffffff;
+    --border: #2a2a2a;
+    display: block;
+    background: transparent;
+    color: var(--text);
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.tickets-page {
+    width: min(100%, 960px);
+    margin: 0 auto;
+    padding: 40px 24px 56px;
+    box-sizing: border-box;
+}
+
+.ticket-wrapper {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+}
+
+.ticket-info {
+    flex: 1 1 auto;
+    min-width: 0;
+    border-right: 2px dashed var(--border);
+}
+
+.ticket-qr {
+    background: rgba(0,0,0,0.2);
+    flex: 0 0 140px;
+    min-width: 140px;
+    max-width: 140px;
+}
+
+.ticket-qr small {
+    max-width: 100%;
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.ticket-wrapper::before, .ticket-wrapper::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--background);
+    border-radius: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+}
+
+/* Bottone X per cancellare il biglietto */
+.btn-cancella-biglietto {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(220, 53, 69, 0.85);
+    color: #fff;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 10;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.btn-cancella-biglietto:hover {
+    background: rgb(220, 53, 69);
+    transform: scale(1.12);
+}
+
+.btn-cancella-biglietto-disabled {
+    opacity: 0.55;
+    background: rgba(80, 80, 80, 0.9);
+}
+
+.btn-cancella-biglietto-disabled:hover {
+    background: rgba(80, 80, 80, 0.9);
+    transform: none;
+}
+
+/* QR cliccabile */
+.qr-clickable {
+    cursor: zoom-in;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.qr-clickable:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+/* Modale QR */
+.qr-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    animation: fadeIn 0.15s ease;
+}
+
+.qr-modal-content {
+    background: var(--surface, #1e1e1e);
+    border: 1px solid var(--border, #333);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    animation: scaleIn 0.18s ease;
+}
+
+.qr-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(220, 53, 69, 0.85);
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.qr-modal-close:hover {
+    background: rgb(220, 53, 69);
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.88); opacity: 0; }
+    to   { transform: scale(1);    opacity: 1; }
+}
+
+@media (max-width: 767.98px) {
+    .tickets-page {
+        padding: 24px 16px 40px;
+    }
+
+    .ticket-wrapper {
+        flex-direction: column;
+    }
+
+    .ticket-info {
+        border-right: none;
+        border-bottom: 2px dashed var(--border);
+    }
+
+    .ticket-qr {
+        flex: none;
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+    }
+}

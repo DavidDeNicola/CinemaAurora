@@ -1,0 +1,62 @@
+<main class="page">
+    <section class="page-hero">
+        <span class="tag">Catalogo film</span>
+        <h1>Trova il film giusto per questa sera.</h1>
+        <p>Esplora tutti i titoli disponibili e passa al dettaglio per consultare la programmazione.</p>
+    </section>
+
+    <section class="toolbar" aria-label="Filtri film">
+        <label>
+            <span>Cerca</span>
+            <input type="search" [(ngModel)]="ricerca" placeholder="Titolo, attore o descrizione">
+        </label>
+
+        <label>
+            <span>Genere</span>
+            <select [(ngModel)]="genereSelezionato">
+                @for (genere of generi; track genere) {
+                    <option [value]="genere">{{ genere }}</option>
+                }
+            </select>
+        </label>
+    </section>
+
+    @if (loading) {
+        <section class="empty-state">
+            <h2>Caricamento film...</h2>
+            <p>Sto recuperando i titoli dal backend.</p>
+        </section>
+    } @else if (errore) {
+        <section class="empty-state error">
+            <h2>Errore</h2>
+            <p>{{ errore }}</p>
+        </section>
+    } @else if (filmFiltrati.length) {
+        <section class="movie-grid">
+            @for (film of filmFiltrati; track film.id; let i = $index) {
+                <article class="movie-card">
+                    <div class="poster-wrapper">
+                        @if (!film.urlLocandina) {
+                            <img class="poster-image" src="/public/Logo.png" [alt]="'Locandina non disponibile per ' + film.titolo">
+                        } @else {
+                            <img class="poster-image" [src]="film.urlLocandina" (error)="handleMissingImage($event)" [alt]="'Locandina ' + film.titolo">
+                        }
+                    </div>
+
+                    <div class="movie-info">
+                        <p class="eyebrow">{{ generiLabel(film) }}</p>
+                        <h2>{{ film.titolo }}</h2>
+                        <p class="description">{{ film.descrizione }}</p>
+                        <p class="movie-meta">{{ durataLabel(film.durata) }} - {{ film.attori }}</p>
+                        <a [routerLink]="['/dettaglio-film', film.id]" class="btn btn-primary">Dettaglio film</a>
+                    </div>
+                </article>
+            }
+        </section>
+    } @else {
+        <section class="empty-state">
+            <h2>Nessun film trovato</h2>
+            <p>{{ films.length ? 'Modifica ricerca o genere per visualizzare altri titoli.' : 'Nessun film disponibile dal backend.' }}</p>
+        </section>
+    }
+</main>

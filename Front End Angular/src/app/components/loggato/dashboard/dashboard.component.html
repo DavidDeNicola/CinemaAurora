@@ -1,0 +1,56 @@
+<mat-sidenav-container class="dashboard-container">
+    <mat-sidenav mode="side" opened="true" disableClose="true" class="sidebar">
+        <div class="chat-header">
+            <p class="">
+                <button class="btn btn-danger bi-list" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                </button>
+            </p>
+            <div>
+                <div class="collapse collapse-vertical" id="collapseWidthExample">
+                    <mat-nav-list>
+                        <a mat-list-item routerLink="profilo" routerLinkActive="active-link" matTooltip="Profilo" matTooltipPosition="right">
+                            <i class="bi bi-person"></i>
+                        </a>
+
+                        @if (userRole === 'CLIENTE') {
+                            <a mat-list-item routerLink="i-miei-biglietti" routerLinkActive="active-link" matTooltip="Biglietti" matTooltipPosition="right">
+                                <i class="bi bi-ticket"></i>
+                            </a>
+                            <div class="assistance-link-wrapper">
+                                <a mat-list-item routerLink="assistenza-ticket" routerLinkActive="active-link" matTooltip="Assistenza" matTooltipPosition="right"><i class="bi bi-headset"></i></a>
+                                @if(nuoviMessaggi){
+                                    <span class="sidebar-notification-dot" aria-label="Chat non lette"></span>
+                                }
+                            </div>
+                        }
+
+                        @if (userRole === 'STAFF') {
+                            <a mat-list-item routerLink="gestione-generi" routerLinkActive="active-link" matTooltip="Generi" matTooltipPosition="right"><i class="bi bi-tags"></i></a>
+                            <a mat-list-item routerLink="gestione-film" routerLinkActive="active-link" matTooltip="Film" matTooltipPosition="right"><i class="bi bi-film"></i></a>
+                            <a mat-list-item routerLink="gestione-spettacoli" routerLinkActive="active-link" matTooltip="Spettacoli" matTooltipPosition="right"><i class="bi bi-calendar3-event"></i></a>
+                            <a mat-list-item routerLink="biglietti-utente" routerLinkActive="active-link" matTooltip="Biglietti-utente" matTooltipPosition="right"><i class="bi bi-ticket-perforated"></i></a>
+                            <a mat-list-item routerLink="ricerca" routerLinkActive="active-link" matTooltip="Ricerca" matTooltipPosition="right"><i class="bi bi-search"></i></a>
+
+                            <div class="assistance-link-wrapper">
+                                <a mat-list-item routerLink="assistenza-ticket" routerLinkActive="active-link" matTooltip="Assistenza" matTooltipPosition="right"><i class="bi bi-headset"></i></a>
+                                @if(nuoviMessaggi){
+                                    <span class="sidebar-notification-dot" aria-label="Chat non lette"></span>
+                                }
+                            </div>
+                        }
+
+                        @if (userRole === 'SUPERADMIN') {
+                            <a mat-list-item routerLink="crea-staff" routerLinkActive="active-link" matTooltip="Crea-Staff" matTooltipPosition="right"><i class="bi bi-person-plus-fill"></i></a>
+                            <a mat-list-item routerLink="statistiche" routerLinkActive="active-link" matTooltip="Statistiche" matTooltipPosition="right"><i class="bi bi-bar-chart-line-fill"></i></a>
+
+                        }
+                    </mat-nav-list>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="dashboard-content">
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

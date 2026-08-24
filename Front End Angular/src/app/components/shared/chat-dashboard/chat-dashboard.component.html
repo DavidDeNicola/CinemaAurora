@@ -1,0 +1,109 @@
+<div class="chat-container">
+
+    <div class="chat-row">
+
+        <!-- Chat Sidebar -->
+
+        <div class="chat-sidebar-col">
+
+            <div class="sidebar">
+
+                <div class="chat-list">
+
+                    @for(msg of chat; track $index) {
+
+                        <div class="chat-item active" (click)="selezionaChat(msg.id)">
+
+                            <div class="chat-item-info">
+
+                                <div class="chat-item-header">
+
+                                    <span class="chat-name">{{msg.oggetto}}</span>
+
+                                </div>
+
+                                <div class="chat-item-preview">
+
+                                    <span class="preview-text">{{msg.nome + ' ' + msg.cognome}}</span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    } @empty {
+                        <div class="py-5 text-center" >
+
+                            <h3>Nessun messaggio da leggere</h3>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Chat Main -->
+
+        @if (chatSelezionata) {
+
+            <div class="chat-main-col">
+
+                <span class="titolo-chat">{{chatSelezionata.chat.oggetto}}</span>
+
+
+
+                <div class="chat-history" #chatHistory>
+
+                    @for (msg of messaggi; track msg.createdAt) {
+
+                        <div class="message-wrapper" [ngClass]="{'my-message': !msg.cliente, 'other-message': msg.cliente}">
+
+                            <div class="message-bubble">
+
+                                <p class="message-text">{{ msg.messaggio }}</p>
+
+                                <span class="message-time">{{ msg.createdAt| date:'HH:mm' }}</span>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+                <form class="chat-input-area" [formGroup]="formMessaggio">
+
+                    <div class="col-11">
+
+                        <input formControlName="messaggio" type="text" placeholder="Scrivi un messaggio..." class="chat-input w-100" />
+
+                    </div>
+
+
+
+                    <div class="col-1">
+
+                        <button (click)="inviaMessaggio()" class="send-button" aria-label="Invia messaggio" [disabled]="formMessaggio.invalid" type="submit">
+
+                            <i class="bi bi-send-fill"></i>
+
+                        </button>
+
+                    </div>
+
+
+
+                </form>
+
+            </div>
+
+        }
+
+    </div>w
+
+</div>

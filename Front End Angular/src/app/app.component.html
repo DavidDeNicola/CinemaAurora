@@ -1,0 +1,10 @@
+<app-navbar/>
+<router-outlet/>
+@if (isAuthenticated) {
+    <app-chat-button></app-chat-button>
+}
+<app-footer/>
+
+@if (isLoading) {
+    <app-spinner/>
+}

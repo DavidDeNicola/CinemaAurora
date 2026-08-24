@@ -1,0 +1,117 @@
+<header class="modal-header">
+    <span class="tag">Riepilogo acquisto</span>
+    <h2>Conferma il tuo biglietto</h2>
+</header>
+
+<div class="ticket-summary">
+    <div class="poster">
+        @if (film.urlLocandina) {
+            <img [src]="film.urlLocandina" [alt]="'Locandina ' + film.titolo">
+        } @else {
+            <span>POSTER</span>
+        }
+    </div>
+
+    <div class="info">
+        <h3>{{ film.titolo }}</h3>
+
+        @if (film.durata) {
+            <p class="meta">{{ durataLabel(film.durata) }}</p>
+        }
+
+        @if (film.descrizione) {
+            <p class="trama">{{ film.descrizione }}</p>
+        }
+
+        <dl class="dettagli-spettacolo">
+            <div class="riga">
+                <dt>Data</dt>
+                <dd>{{ formatData(spettacolo.data) | titlecase }}</dd>
+            </div>
+            <div class="riga">
+                <dt>Orario</dt>
+                <dd>{{ formatOrario(spettacolo.oraInizio) }} - {{ formatOrario(spettacolo.oraFine) }}</dd>
+            </div>
+            <div class="riga">
+                <dt>Sala</dt>
+                <dd>{{ spettacolo.nomeSala ?? 'Sala Cinema' }} @if (sala.tipo) { <span class="badge">{{ sala.tipo }}</span> }</dd>
+            </div>
+
+        </dl>
+    </div>
+</div>
+
+<section class="acquirente">
+    <h4>Dettagli acquirente</h4>
+    <p>{{ emailAcquirente ?? 'Utente non identificato' }}</p>
+</section>
+
+<section class="mappa-sala-container">
+    <h4>Seleziona i tuoi posti sulla mappa</h4>
+
+    <div class="schermo-cinema">
+        <span>SCHERMO</span>
+    </div>
+
+    <div class="griglia-posti">
+        @for (lettera of getLettereFile(); track lettera || $index) {
+            <div class="riga-cinema">
+                <span class="etichetta-fila">Fila {{ lettera }}</span>
+
+                @for (posto of mappaPosti[lettera]; track posto.id || (posto.fila + '-' + posto.colonna)) {
+                    <div class="blocco-posto">
+                        <button
+                                type="button"
+                                [disabled]="posto.occupato"
+                                [ngClass]="{
+              'posto-poltrona': true,
+              'libero': !posto.occupato && !isPostoSelezionato(posto),
+              'occupato': posto.occupato,
+              'selezionato': isPostoSelezionato(posto)
+            }"
+                                (click)="gestisciSelezionePosto(posto)"
+                                [title]="'Fila ' + posto.fila + ' - Posto ' + posto.colonna">
+                            {{ posto.colonna }}
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="legenda-mappa">
+        <div class="voce-legenda"><span class="quadro libero"></span> Libero</div>
+        <div class="voce-legenda"><span class="quadro selezionato"></span> Selezionato</div>
+        <div class="voce-legenda"><span class="quadro occupato"></span> Occupato</div>
+    </div>
+</section>
+<section class="quantita">
+    <h4>Biglietti selezionati</h4>
+    <div class="stepper">
+        <span>{{ numeroBiglietti }}</span>
+    </div>
+</section>
+
+<section class="riepilogo-costi">
+    <div class="riga">
+        <span>Prezzo unitario</span>
+        <span>{{ prezzoUnitario | currency:'EUR' }}</span>
+    </div>
+    <div class="riga totale">
+        <span>Totale da pagare</span>
+        <span>{{ totale | currency:'EUR' }}</span>
+    </div>
+</section>
+
+@if (errore) {
+    <p class="errore">{{ errore }}</p>
+}
+
+<div class="modal-actions">
+    <button type="button" class="btn btn-outline" (click)="chiudiModale()" [disabled]="loading">
+        Annulla
+    </button>
+    <button type="button" class="btn btn-primary" (click)="confermaAcquisto()" [disabled]="loading || numeroBiglietti === 0">
+        {{ loading ? 'Acquisto in corso...' : 'Acquista' }}
+    </button>
+</div>

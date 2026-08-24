@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MovieExplorer
+Bundle-SymbolicName: MovieExplorer
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-25
+Automatic-Module-Name: MovieExplorer
+Export-Package: org.elis.movieexplorer

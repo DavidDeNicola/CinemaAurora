@@ -1,0 +1,88 @@
+:host {
+    /* ==========================================================================
+       1. VARIABILI COLORE PERSONALIZZATE (I tuoi colori di riferimento)
+       ========================================================================== */
+    --custom-background: #121212;
+    --custom-surface: #1E1E1E;
+    --custom-primary: #E50914;
+    --custom-secondary: #B3B3B3;
+    --custom-text: #FFFFFF;
+    --custom-border: #2a2a2a;
+
+    /* ==========================================================================
+       2. OVERRIDE DELLE VARIABILI DI BOOTSTRAP 5
+       Mappiamo i tuoi colori sulle utility native di Bootstrap
+       ========================================================================== */
+    --bs-body-bg: var(--custom-background);
+    --bs-body-color: var(--custom-text);
+
+    /* Colori principali */
+    --bs-primary: var(--custom-primary);
+    --bs-primary-rgb: 229, 9, 20;
+    --bs-secondary: var(--custom-secondary);
+    --bs-secondary-rgb: 179, 179, 179;
+
+    /* Sfondi, bordi e componenti (es. Accordion, Cards, Form) */
+    --bs-tertiary-bg: var(--custom-surface);
+    --bs-border-color: var(--custom-border);
+    --bs-heading-color: var(--custom-text);
+
+    /* Customizzazione specifica per i Form di Bootstrap */
+    --bs-body-bg-2: #292929;
+
+    display: block;
+}
+
+/* ==========================================================================
+   3. STILI SPECIFICI PER L'ACCORDION DI BOOTSTRAP (Tema Scuro)
+   ========================================================================== */
+.accordion {
+    --bs-accordion-bg: var(--custom-surface);
+    --bs-accordion-color: var(--custom-text);
+    --bs-accordion-border-color: var(--custom-border);
+
+    --bs-accordion-btn-bg: var(--custom-surface);
+    --bs-accordion-btn-color: var(--custom-text);
+
+    /* Stato attivo (quando l'accordion è aperto) */
+    --bs-accordion-active-bg: rgba(229, 9, 20, 0.1);
+    --bs-accordion-active-color: var(--custom-primary);
+
+    /* Rimuove l'alone blu di focus standard e mette quello rosso */
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+}
+
+/* Fix per l'icona a freccia dell'accordion (la rende bianca/visibile sullo scuro) */
+.accordion-button::after {
+    filter: invert(1) grayscale(1) brightness(2);
+}
+
+/* ==========================================================================
+   4. EXTRA COMFORT: Utility di supporto per il tuo layout
+   ========================================================================== */
+
+/* Se usi i badge di Bootstrap per i tag */
+.badge.bg-primary {
+    background-color: rgba(229, 9, 20, 0.15) !important;
+    color: var(--custom-primary) !important;
+    border: 1px solid rgba(229, 9, 20, 0.3);
+}
+
+/* Input e Select di Bootstrap (Form Controls) */
+.form-control, .form-select {
+    background-color: #292929 !important;
+    border-color: #333 !important;
+    color: var(--custom-text) !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #292929;
+    color: var(--custom-text);
+    border-color: var(--custom-primary);
+    box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+}
+
+/* Testo secondario/mutato coerente con il tuo --secondary */
+.text-muted {
+    color: var(--custom-secondary) !important;
+}

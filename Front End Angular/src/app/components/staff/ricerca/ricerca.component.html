@@ -1,0 +1,61 @@
+<main class="cinema-page">
+
+    <section class="content-section">
+        <div class="section-header">
+            <div>
+                <h2>Cerca un titolo</h2>
+                <p>Digita il nome del film per intero o parzialmente per interrogarlo.</p>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" [(ngModel)]="stringaRicerca" (keydown.enter)="ricerca()" placeholder="Es. Inception, Matrix, Interstellar..." class="search-input">
+                <button class="btn btn-primary" (click)="ricerca()">REPERISCI FILM</button>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Risultati trovati</h2>
+        </div>
+
+        <div class="movie-grid">
+            @for (film of filmTrovati; track film.Title) {
+                <article class="movie-card">
+
+                    @if (!film.Poster || film.Poster === 'N/A') {
+                        <div class="poster dark-red">
+                            <span>NO IMAGE</span>
+                        </div>
+                    } @else {
+                        <img class="poster-image" [src]="film.Poster" [alt]="'Locandina ' + film.Title">
+                    }
+
+                    <div class="movie-info">
+                        <h3 class="movie-title" [title]="film.Title">
+                            {{ film.Title }}
+                        </h3>
+
+                        <p class="movie-runtime">
+                            ⏱️ {{ film.Runtime }}
+                        </p>
+
+                        <p class="movie-actors">
+                            👥 {{ film.Actors }}
+                        </p>
+
+                        <button class="btn btn-primary" (click)="aggiungi(film)">
+                            📥 Importa nel Cinema
+                        </button>
+                    </div>
+                </article>
+            }
+        </div>
+
+        @if (filmTrovati.length === 0) {
+            <div class="empty-state">
+                Digita il nome di un film e clicca "Reperisci Film" per popolare la griglia.
+            </div>
+        }
+    </section>
+</main>
