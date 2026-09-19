@@ -1,0 +1,33 @@
+services:
+  mysql-cinema:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: MovieExplorer
+    volumes:
+      - mysql-cinema-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  cinema-backend:
+    build: .
+    depends_on:
+      mysql-cinema:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-cinema:3306/MovieExplorer
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: password
+      SMTP_EMAIL: test@example.com
+      SMTP_PASSWORD: dummy
+      JWT_KEY: QuestaEUnaChiaveDiTestMoltoLungaPerJWT1234567890
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-cinema-data:

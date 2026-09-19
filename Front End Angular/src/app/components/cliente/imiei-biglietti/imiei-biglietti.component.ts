@@ -2,11 +2,8 @@ import { Component, OnInit, HostListener, DestroyRef, inject } from '@angular/co
 import { QRCodeComponent } from 'angularx-qrcode';
 import { ResponseBigliettoDTO } from "../../../dto/biglietto/response/response-biglietto-dto";
 import { BigliettoService } from "../../../services/biglietto.service";
-import { forkJoin } from "rxjs";
-import { SpettacoloService } from "../../../services/spettacolo.service";
 import { ResponseSpettacoloDTO } from "../../../dto/spettacolo/response/response-spettacolo-dto";
 import { ResponseFilmDTO } from "../../../dto/film/response/response-film-dto";
-import { FilmService } from "../../../services/film.service";
 import { CurrencyPipe, DatePipe } from "@angular/common";
 import { AuthService } from "../../../services/auth.service";
 import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
