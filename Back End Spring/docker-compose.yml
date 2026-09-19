@@ -29,5 +29,13 @@ services:
     ports:
       - "8080:8080"
 
+  cinema-frontend:
+    build:
+      context: "../Front End Angular"
+    depends_on:
+      - cinema-backend
+    ports:
+      - "4200:80"
+
 volumes:
   mysql-cinema-data:
