@@ -1,4 +1,7 @@
 🎬 Cinema Aurora
+
+[![CI](https://github.com/DavidDeNicola/CinemaAurora/actions/workflows/ci.yml/badge.svg)](https://github.com/DavidDeNicola/CinemaAurora/actions/workflows/ci.yml)
+
 Un'applicazione web full-stack per la gestione degli spettacoli e l’acquisto di biglietti di un cinema. Questo progetto è suddiviso in due componenti principali: un frontend sviluppato in Angular e un backend realizzato con Spring Boot.
 
 Tecnologie Utilizzate
