@@ -18,6 +18,9 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.test.web.servlet.MvcResult;
+import org.elis.movieexplorer.model.Spettacolo;
+import org.elis.movieexplorer.repository.SpettacoloRepository;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class BigliettoTest extends GenericTest{
 	private final MockMvc mock;
 	private final UtenteRepository utenteRepository;
+	private final SpettacoloRepository spettacoloRepository;
 	private final ObjectMapper mapper = new ObjectMapper();
 	private static Long idBigliettoCreato;
 	
@@ -178,6 +182,13 @@ public class BigliettoTest extends GenericTest{
 	@Order(9)
 	@WithUserDetails("user@gmail.com")
 	public void deleteSpettacoloPassato() throws Exception{
+		
+		// il biglietto 1 appartiene allo spettacolo 1: lo faccio iniziare adesso,
+		// così la cancellazione è sempre fuori tempo, a qualunque ora giri il test
+		Spettacolo spettacolo = spettacoloRepository.findById(1L).orElseThrow();
+		spettacolo.setOraInizio(LocalDateTime.now());
+		spettacoloRepository.save(spettacolo);
+
 		RequestBuilder request = MockMvcRequestBuilders
 				.delete("/cliente/biglietto/1")
 				.content("user@gmail.com")
