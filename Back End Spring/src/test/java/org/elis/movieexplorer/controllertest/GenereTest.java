@@ -13,15 +13,21 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import com.jayway.jsonpath.JsonPath;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GenereTest extends GenericTest {
 	private final MockMvc mock; 
 	private final ObjectMapper mapper = new ObjectMapper();
+	private static Long idGenereCreato;
 
 	
 	@Test
@@ -29,7 +35,7 @@ public class GenereTest extends GenericTest {
 	@WithMockUser(authorities = "ROLE_Staff")
 	public void insertOk() throws Exception {
 		InsertGenereDTO dto = new InsertGenereDTO();
-		dto.setNome("Cazzeggio");
+		dto.setNome("Genere di test");
 
 		String json = mapper.writeValueAsString(dto); // Stringa l'oggetto sotto forma di JSON
 		
@@ -39,7 +45,8 @@ public class GenereTest extends GenericTest {
 		
 		ResultMatcher status = MockMvcResultMatchers.status().isOk(); 
 		
-		mock.perform(request).andExpect(status);
+		MvcResult result = mock.perform(request).andExpect(status).andReturn();
+		idGenereCreato = ((Number) JsonPath.read(result.getResponse().getContentAsString(), "$.id")).longValue();
 	}
 	
 	@Test
@@ -182,7 +189,7 @@ public class GenereTest extends GenericTest {
 	@WithMockUser(authorities = "ROLE_Staff")
 	public void removeByIdOk() throws Exception {
 		
-		RequestBuilder request = MockMvcRequestBuilders.delete("/staff/genere/16")
+		RequestBuilder request = MockMvcRequestBuilders.delete("/staff/genere/" + idGenereCreato)
 				.contentType(MediaType.APPLICATION_JSON);
 		
 		ResultMatcher status = MockMvcResultMatchers.status().isOk(); 
@@ -195,7 +202,7 @@ public class GenereTest extends GenericTest {
 	@WithMockUser(authorities = "ROLE_Staff")
 	public void removeByIdBadRequest() throws Exception {
 		
-		RequestBuilder request = MockMvcRequestBuilders.delete("/staff/genere/16")
+		RequestBuilder request = MockMvcRequestBuilders.delete("/staff/genere/" + idGenereCreato)
 				.contentType(MediaType.APPLICATION_JSON);
 		
 		ResultMatcher status = MockMvcResultMatchers.status().is4xxClientError(); 

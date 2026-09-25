@@ -104,7 +104,7 @@ public class FilmTest extends GenericTest {
     @Order(4)
     @WithMockUser(authorities = "ROLE_Staff")
     public void findAll2xx() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.get("/staff/film");
+        RequestBuilder request = MockMvcRequestBuilders.get("/film");
         ResultMatcher status = MockMvcResultMatchers.status().isOk();
         ResultMatcher isArray = MockMvcResultMatchers.jsonPath("$").isArray();
 
@@ -115,7 +115,7 @@ public class FilmTest extends GenericTest {
     @Order(5)
     @WithMockUser(authorities = "ROLE_Staff")
     public void findByIdOk() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.get("/staff/film/" + idGladiatore);
+        RequestBuilder request = MockMvcRequestBuilders.get("/film/" + idGladiatore);
         ResultMatcher status = MockMvcResultMatchers.status().isOk();
         ResultMatcher checkTitle = MockMvcResultMatchers.jsonPath("$.titolo").value("Il Gladiatore II");
 
@@ -163,7 +163,7 @@ public class FilmTest extends GenericTest {
     @Test
     @WithMockUser(authorities = "ROLE_Staff")
     public void findByTitolo2xx() throws Exception{
-        RequestBuilder request = MockMvcRequestBuilders.get("/staff/film/titolo?titolo=Pulp")
+        RequestBuilder request = MockMvcRequestBuilders.get("/film/titolo?titolo=Pulp")
                 .contentType(MediaType.APPLICATION_JSON);
 
         ResultMatcher status = MockMvcResultMatchers.status().is2xxSuccessful();

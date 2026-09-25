@@ -102,7 +102,7 @@ public class UtenteTest extends GenericTest {
 	@Test
 	@Order(4)
 //	@WithMockUser(authorities = "ROLE_SuperAdmin")
-	@WithUserDetails("admin@movieexplorer.it")
+	@WithUserDetails("admin@gmail.com")
 	public void addStaffOk() throws Exception {
 		InsertUtenteDTO dto = new InsertUtenteDTO();
 		dto.setNome("Admin");

@@ -1,3 +1,5 @@
+name: cinema-aurora
+
 services:
   mysql-cinema:
     image: mysql:8

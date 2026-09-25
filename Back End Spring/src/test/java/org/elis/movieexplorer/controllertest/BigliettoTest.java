@@ -11,15 +11,25 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import java.util.List;
+import java.util.stream.IntStream;
+import org.elis.movieexplorer.repository.UtenteRepository;
+import com.jayway.jsonpath.JsonPath;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.test.web.servlet.MvcResult;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BigliettoTest extends GenericTest{
 	private final MockMvc mock;
+	private final UtenteRepository utenteRepository;
 	private final ObjectMapper mapper = new ObjectMapper();
+	private static Long idBigliettoCreato;
 	
 //POST "/cliente/biglietto"
 	
@@ -27,11 +37,14 @@ public class BigliettoTest extends GenericTest{
 	@Test
 	@Order(1)
 	//@WithMockUser(authorities = "ROLE_CLIENTE")
-	@WithUserDetails("mailprva@gmail.com")
+	@WithUserDetails("user@gmail.com")
 	public void insertOk() throws Exception{
 		InsertBigliettoDTO dto = new InsertBigliettoDTO();
-		dto.setIdSpettacolo(1L);
-		dto.setNumeroBiglietti(1);
+		
+		// spettacolo 27 = tra 7 giorni in sala 1: il biglietto si potrà sempre cancellare
+		dto.setIdSpettacolo(27L);
+		
+		dto.setIdPosti(List.of(72));
 		
 		String json = mapper.writeValueAsString(dto);
 		
@@ -42,17 +55,18 @@ public class BigliettoTest extends GenericTest{
 			
 		ResultMatcher status = MockMvcResultMatchers.status().isOk();
 		
-		mock.perform(request).andExpect(status);
+		MvcResult result = mock.perform(request).andExpect(status).andReturn();
+		idBigliettoCreato = ((Number) JsonPath.read(result.getResponse().getContentAsString(), "$[0].id")).longValue();
 	}
 	
 	// insertBigliettiInsufficenti
 	@Test
 	@Order(2)
-	@WithUserDetails("mailprva@gmail.com")
+	@WithUserDetails("user@gmail.com")
 	public void insertBigliettiInsufficenti() throws Exception{
 		InsertBigliettoDTO dto = new InsertBigliettoDTO();
 		dto.setIdSpettacolo(1L);
-		dto.setNumeroBiglietti(999);
+		dto.setIdPosti(IntStream.rangeClosed(1, 999).boxed().toList());
 		
 		String json = mapper.writeValueAsString(dto);
 		
@@ -74,8 +88,9 @@ public class BigliettoTest extends GenericTest{
 	@Order(3)
 	@WithUserDetails("luca.bianchi@movieexplorer.it")
 	public void findByUtenteOk() throws Exception{
-		RequestBuilder request = MockMvcRequestBuilders
-				.get("/staff/biglietto/utente/4");
+		Long idUtente = utenteRepository.findUtenteByEmail("user@gmail.com").orElseThrow().getId();
+
+		RequestBuilder request = MockMvcRequestBuilders.get("/staff/biglietto/utente/" + idUtente);
 		
 		ResultMatcher status = MockMvcResultMatchers.status().isOk();
 		ResultMatcher content = MockMvcResultMatchers.jsonPath("$").isArray();
@@ -130,12 +145,12 @@ public class BigliettoTest extends GenericTest{
 	
 	@Test
 	@Order(7)
-	@WithUserDetails("sara.colombo@email.it")
+	@WithUserDetails("user@gmail.com")
 	public void deleteOk() throws Exception{
 		RequestBuilder request = MockMvcRequestBuilders
-				.delete("/cliente/biglietto/11")
-				.content("sara.colombo@email.it")
-				.contentType(MediaType.APPLICATION_JSON);
+			.delete("/cliente/biglietto/" + idBigliettoCreato)
+			.content("user@gmail.com")
+			.contentType(MediaType.APPLICATION_JSON);
 		
 		ResultMatcher status = MockMvcResultMatchers.status().isOk();
 		
@@ -145,11 +160,11 @@ public class BigliettoTest extends GenericTest{
 	//deleteBigliettoNotFound
 	@Test
 	@Order(8)
-	@WithUserDetails("mailprva@gmail.com")
+	@WithUserDetails("user@gmail.com")
 	public void deleteBigliettoNotFound() throws Exception{
 		RequestBuilder request = MockMvcRequestBuilders
 				.delete("/cliente/biglietto/999")
-				.content("mailprva@gmail.com")
+				.content("user@gmail.com")
 				.contentType(MediaType.APPLICATION_JSON);
 		
 		ResultMatcher status = MockMvcResultMatchers.status().isNotFound();
@@ -161,11 +176,11 @@ public class BigliettoTest extends GenericTest{
 	// deleteSpettacoloPassato
 	@Test
 	@Order(9)
-	@WithUserDetails("mailprva@gmail.com")
+	@WithUserDetails("user@gmail.com")
 	public void deleteSpettacoloPassato() throws Exception{
 		RequestBuilder request = MockMvcRequestBuilders
 				.delete("/cliente/biglietto/1")
-				.content("mailprva@gmail.com")
+				.content("user@gmail.com")
 				.contentType(MediaType.APPLICATION_JSON);
 		
 		ResultMatcher status = MockMvcResultMatchers.status().isUnprocessableEntity();

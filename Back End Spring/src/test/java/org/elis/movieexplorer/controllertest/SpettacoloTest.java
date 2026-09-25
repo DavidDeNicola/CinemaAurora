@@ -59,10 +59,13 @@ public class SpettacoloTest extends GenericTest {
     @WithMockUser(authorities = "ROLE_Staff")
     public void insertConflict() throws Exception {
         InsertSpettacoloDTO dto = new InsertSpettacoloDTO();
-        dto.setData(LocalDate.parse("2026-05-26"));
-        dto.setOraInizio(LocalDateTime.parse("2026-05-26T19:30:00"));
-        dto.setIdSala(7L);
-        dto.setIdFilm(14L);
+
+        // InitRunConfig crea sempre: tra 7 giorni, sala 1, Top Gun dalle 15:00 alle 17:10
+        LocalDate tra7 = LocalDate.now().plusDays(7);
+        dto.setData(tra7);
+        dto.setOraInizio(tra7.atTime(16, 0));
+        dto.setIdSala(1L);
+        dto.setIdFilm(1L);
 
         String json = mapper.writeValueAsString(dto);
 
@@ -158,7 +161,11 @@ public class SpettacoloTest extends GenericTest {
     @WithMockUser(authorities = "ROLE_Staff")
     public void editByIdConflict() throws Exception {
         EditSpettacoloDTO dto = new EditSpettacoloDTO();
-        dto.setIdSala(2L);
+        
+        // InitRunConfig crea sempre in sala 1, oggi: spettacolo 1 (10:00) e spettacolo 4 (20:30 → 22:40)
+        // sposto lo spettacolo 1 alle 20:00 → 22:00: si sovrappone al 4
+        dto.setOraInizio(LocalDate.now().atTime(20, 0));
+        dto.setOraFine(LocalDate.now().atTime(22, 0));
 
         String json = mapper.writeValueAsString(dto);
 
