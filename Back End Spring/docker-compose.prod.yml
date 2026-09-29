@@ -1,0 +1,7 @@
+services:
+  cinema-frontend:
+    ports:
+      - "443:443"
+    volumes:
+      - "../Front End Angular/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro"
+      - /etc/letsencrypt:/etc/letsencrypt:ro
