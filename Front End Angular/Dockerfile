@@ -8,5 +8,6 @@ RUN npm run build
 
 # Stage 2: run
 FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/cinema-front/browser  /usr/share/nginx/html
 EXPOSE 80
