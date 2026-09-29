@@ -2,6 +2,24 @@
 
 [![CI](https://github.com/DavidDeNicola/CinemaAurora/actions/workflows/ci.yml/badge.svg)](https://github.com/DavidDeNicola/CinemaAurora/actions/workflows/ci.yml)
 
+## Demo online
+
+L'applicazione è online su **https://cinema-aurora.duckdns.org**
+
+Per esplorare tutte le funzionalità puoi usare questi account di prova:
+
+| Ruolo | Email | Password | Cosa puoi provare |
+|---|---|---|---|
+| Cliente | marco.rossi@gmail.com | Marco123! | Acquisto dei biglietti con scelta del posto, gestione e annullamento dei propri biglietti, chat con l'assistenza |
+| Staff | staff@gmail.com | Staff123! | Gestione di film (con ricerca tramite OMDb), generi e spettacoli, consultazione dei biglietti venduti, risposta alle chat dei clienti |
+| Amministratore | admin@gmail.com | Admin123! | Statistiche su fatturato, biglietti venduti e occupazione (per film, spettacolo e sala), creazione ed eliminazione dei membri dello staff |
+
+> I dati sono di prova e condivisi tra tutti i visitatori.
+
+**Deploy:** AWS EC2 · Docker Compose · Nginx (reverse proxy) · HTTPS con Let's Encrypt
+
+
+
 Un'applicazione web full-stack per la gestione degli spettacoli e l’acquisto di biglietti di un cinema. Questo progetto è suddiviso in due componenti principali: un frontend sviluppato in Angular e un backend realizzato con Spring Boot.
 
 Tecnologie Utilizzate
