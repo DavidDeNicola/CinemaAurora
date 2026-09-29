@@ -49,3 +49,6 @@ replay_pid*
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Variabili d'ambiente con credenziali reali
+.env
