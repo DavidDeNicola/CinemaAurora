@@ -24,10 +24,10 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-cinema:3306/MovieExplorer
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: password
-      SMTP_EMAIL: test@example.com
-      SMTP_PASSWORD: dummy
-      JWT_KEY: QuestaEUnaChiaveDiTestMoltoLungaPerJWT1234567890
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-password}
+      SMTP_EMAIL: ${SMTP_EMAIL:-test@example.com}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-dummy}
+      JWT_KEY: ${JWT_KEY:-QuestaEUnaChiaveDiTestMoltoLungaPerJWT1234567890}
     ports:
       - "8080:8080"
 
