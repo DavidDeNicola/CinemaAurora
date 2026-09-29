@@ -1,5 +1,6 @@
 services:
   cinema-frontend:
+    restart: unless-stopped
     ports:
       - "443:443"
     volumes:
@@ -7,5 +8,9 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
 
   cinema-backend:
+    restart: unless-stopped
     environment:
       SERVER_FORWARD_HEADERS_STRATEGY: framework
+
+  mysql-cinema:
+    restart: unless-stopped
