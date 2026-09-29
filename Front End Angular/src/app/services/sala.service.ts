@@ -5,12 +5,13 @@ import {Observable} from 'rxjs';
 import {ResponseSalaDTO} from '../dto/sala/response/response-sala-dto';
 import {EditSalaDTO} from '../dto/sala/request/edit-sala-dto';
 import {Tipo} from '../enums/tipo';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SalaService {
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

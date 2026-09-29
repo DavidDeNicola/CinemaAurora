@@ -4,12 +4,13 @@ import {finalize, Observable} from 'rxjs';
 import {InsertBigliettoDTO} from '../dto/biglietto/request/insert-biglietto-dto';
 import {ResponseBigliettoDTO} from '../dto/biglietto/response/response-biglietto-dto';
 import {SharedService} from "./shared.service";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BigliettoService {
-  private readonly BASE_URL = 'http://localhost:8080';
+  private readonly BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

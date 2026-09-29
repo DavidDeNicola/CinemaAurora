@@ -3,12 +3,13 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {SharedService} from "./shared.service";
 import {ResponsePostoSpettacoloDto} from "../dto/post/response/response-posto-dto";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostoService {
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient, private sharedService: SharedService) {}
 

@@ -6,13 +6,14 @@ import {ResponseMessaggioDTO} from "../dto/message/response/ResponseMessaggioDTO
 import {InsertChatDTO} from "../dto/chat/request/InsertChatDTO";
 import {ResponseChatDTO} from "../dto/chat/response/ResponseChatDTO";
 import {ResponseInfoChatDTO} from "../dto/chat/response/ResponseInfoChatDTO";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

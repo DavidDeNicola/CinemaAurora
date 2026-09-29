@@ -7,17 +7,15 @@ import { ResetPasswordResponse } from '../dto/resetpassword/response/reset-passw
 import { ResetPasswordRequest } from '../dto/resetpassword/request/reset-password-request';
 import { jwtDecode } from 'jwt-decode';
 import {ResponseUtenteDataDTO} from "../dto/utente/response/response-utente-data-dto";
-
-
 import { ResponseUtenteDTO } from '../dto/utente/response/response-utente-dto';
 import {InsertUtenteDTO} from "../dto/utente/request/insert-utente-dto";
-
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
   private TOKEN_KEY = 'auth_token';
 
   constructor(private http: HttpClient) { }

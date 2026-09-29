@@ -6,12 +6,13 @@ import {ResponseFilmDTO} from '../dto/film/response/response-film-dto';
 import {EditFilmDTO} from '../dto/film/request/edit-film-dto';
 import {LongOmdbResponseApiDto} from '../dto/omdbapi/response/long-omdb-response-api-dto';
 import {SharedService} from "./shared.service";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilmService {
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
 
   constructor(
       private http: HttpClient,

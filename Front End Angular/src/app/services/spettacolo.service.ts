@@ -4,12 +4,13 @@ import {InsertSpettacoloDTO} from '../dto/spettacolo/request/insert-spettacolo-d
 import {Observable} from 'rxjs';
 import {ResponseSpettacoloDTO} from '../dto/spettacolo/response/response-spettacolo-dto';
 import {EditSpettacoloDTO} from '../dto/spettacolo/request/edit-spettacolo-dto';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpettacoloService {
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

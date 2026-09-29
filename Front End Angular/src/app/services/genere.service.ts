@@ -5,12 +5,13 @@ import {finalize, Observable} from 'rxjs';
 import {ResponseGenereDTO} from '../dto/genere/response/response-genere-dto';
 import {EditGenereDTO} from '../dto/genere/request/edit-genere-dto';
 import {SharedService} from "./shared.service";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GenereService {
-  private BASE_URL = 'http://localhost:8080';
+  private BASE_URL = environment.apiUrl;
 
   constructor(private http: HttpClient, private sharedService: SharedService) {}
 
