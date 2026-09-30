@@ -57,5 +57,6 @@ jobs:
             set -e
             cd ~/CinemaAurora
             git pull origin main
+            cd "Back End Spring"
             docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
             docker image prune -f
