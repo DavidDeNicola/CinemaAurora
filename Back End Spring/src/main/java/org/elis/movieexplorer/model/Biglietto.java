@@ -44,7 +44,7 @@ public class Biglietto {
 	@JoinColumn(nullable = false)
 	private Spettacolo spettacolo;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Posto posto;
 
