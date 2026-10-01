@@ -1,16 +1,17 @@
 services:
   cinema-frontend:
     restart: unless-stopped
-    ports:
-      - "443:443"
+    ports: !override
+      - "127.0.0.1:8081:80"
     volumes:
       - "../Front End Angular/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro"
-      - /etc/letsencrypt:/etc/letsencrypt:ro
 
   cinema-backend:
     restart: unless-stopped
+    ports: !reset []
     environment:
       SERVER_FORWARD_HEADERS_STRATEGY: framework
 
   mysql-cinema:
     restart: unless-stopped
+    ports: !reset []
