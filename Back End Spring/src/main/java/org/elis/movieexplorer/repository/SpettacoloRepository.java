@@ -24,4 +24,6 @@ public interface SpettacoloRepository extends JpaRepository<Spettacolo, Long> {
 	@Query("DELETE FROM Spettacolo s WHERE s.film.id = :id")
 	void deleteAllByFilmId(Long id);
 
+	boolean existsByDataGreaterThanEqual(LocalDate data);
+
 }

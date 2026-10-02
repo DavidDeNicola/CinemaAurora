@@ -393,9 +393,10 @@ public class InitRunConfig implements CommandLineRunner {
 		List<Spettacolo> spettacoli = new ArrayList<>();
 		try {
 			spettacoli = spettacoloRepository.findAll();
-			if (spettacoli.isEmpty() && !sale.isEmpty() && filmInCatalogo.size() >= 3) {
+			LocalDate oggi = LocalDate.now();
+			boolean ciSonoSpettacoliFuturi = spettacoloRepository.existsByDataGreaterThanEqual(oggi);
 
-				LocalDate oggi      = LocalDate.now();
+			if (!ciSonoSpettacoliFuturi && !sale.isEmpty() && filmInCatalogo.size() >= 3) {
 				LocalDate domani    = oggi.plusDays(1);
 				LocalDate dopo      = oggi.plusDays(2);
 				LocalDate tra3      = oggi.plusDays(3);
