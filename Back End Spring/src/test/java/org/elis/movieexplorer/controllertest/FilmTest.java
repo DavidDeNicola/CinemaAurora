@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions;
 import org.elis.movieexplorer.GenericTest;
 import org.elis.movieexplorer.dto.film.request.EditFilmDTO;
 import org.elis.movieexplorer.dto.film.request.InsertFilmDTO;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -171,6 +172,7 @@ public class FilmTest extends GenericTest {
     }
 
     @Test
+    @Disabled("Chiama direttamente omdbapi.com: dipende da internet e non testa il codice dell'app")
     @WithMockUser(authorities = "ROLE_Staff")
     public void findByTitoloNotAuthorized() throws Exception{
         RestClient restClient = RestClient.create("https://www.omdbapi.com");
