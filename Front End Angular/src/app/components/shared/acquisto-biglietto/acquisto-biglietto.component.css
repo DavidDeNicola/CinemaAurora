@@ -1,19 +1,20 @@
 :host {
   /* Palette Unificata "Cinema Dark" */
   --background: #121212;
-  --surface: #1E1E1E;
+  --surface: #1e1e1e;
   --surface-hover: #252525;
-  --primary: #E50914;
-  --primary-hover: #F40B17;
+  --primary: #e50914;
+  --primary-hover: #f40b17;
   --primary-alpha: rgba(229, 9, 20, 0.15);
-  --secondary: #AAAAAA;
-  --text: #FFFFFF;
-  --border: #2A2A2A;
+  --secondary: #aaaaaa;
+  --text: #ffffff;
+  --border: #2a2a2a;
 
   /* Stati dei Posti Aggiornati */
-  --seat-free: #4A4A4A;        /* Grigio di base per i posti liberi */
-  --seat-selected: #E50914;    /* Rosso pieno per il posto selezionato */
-  --seat-occupied: #222222;    /* Grigio scurissimo per i posti occupati */
+  --seat-free: #4a4a4a; /* Grigio di base per i posti liberi */
+  --seat-selected: #e50914; /* Rosso pieno per il posto selezionato */
+  --seat-occupied: #222222; /* Grigio scurissimo per i posti occupati */
+  --seat-size: 30px;
 
   display: flex;
   flex-direction: column;
@@ -74,7 +75,7 @@
 
 .poster {
   align-items: center;
-  background: linear-gradient(145deg, #2A2A2A, #151515);
+  background: linear-gradient(145deg, #2a2a2a, #151515);
   border-radius: 8px;
   color: var(--secondary);
   display: flex;
@@ -85,7 +86,9 @@
   letter-spacing: 1px;
   overflow: hidden;
   border: 1px solid var(--border);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .ticket-summary:hover .poster {
@@ -199,7 +202,7 @@
   font-weight: 600;
   font-size: 0.95rem;
   margin: 0;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .stepper {
@@ -237,7 +240,7 @@
 .stepper button:disabled {
   cursor: not-allowed;
   opacity: 0.15;
-  background: #1A1A1A;
+  background: #1a1a1a;
 }
 
 .stepper span {
@@ -294,13 +297,14 @@
   width: 100%;
   overflow-x: auto;
   padding: 4px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .riga-cinema {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  margin: 0 auto;
 }
 
 .etichetta-fila {
@@ -321,8 +325,8 @@
 
 /* Stile Base Poltrona */
 .posto-poltrona {
-  width: 32px;
-  height: 32px;
+  width: var(--seat-size);
+  height: var(--seat-size);
   border: 2px solid transparent; /* Aumentato a 2px per rendere il bordo dell'hover ben visibile */
   border-radius: 6px;
   font-size: 11px;
@@ -332,24 +336,25 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-  border-color 0.2s ease,
-  background-color 0.2s ease,
-  box-shadow 0.2s ease;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 /* 1. STATO: POSTO LIBERO (Grigio -> Bordo Rosso in Hover) */
 .posto-poltrona.libero {
   background-color: var(--seat-free);
-  color: #CCCCCC;
+  color: #cccccc;
   border-color: #555555; /* Bordo grigio sottile a riposo */
 }
 
 .posto-poltrona.libero:hover {
   transform: translateY(-3px);
-  background-color: #555555;      /* Schiarisce leggermente lo sfondo grigio */
-  border-color: var(--primary);   /* IL BORDO DIVENTA ROSSO */
-  color: #FFFFFF;
+  background-color: #555555; /* Schiarisce leggermente lo sfondo grigio */
+  border-color: var(--primary); /* IL BORDO DIVENTA ROSSO */
+  color: #ffffff;
   box-shadow: 0 4px 10px rgba(229, 9, 20, 0.2); /* Leggero alone rosso sotto */
 }
 
@@ -357,15 +362,17 @@
 .posto-poltrona.selezionato {
   background-color: var(--seat-selected); /* DIVENTA ROSSO COMPLETAMENTE */
   border-color: var(--primary);
-  color: #FFFFFF; /* Testo bianco ben leggibile sul rosso */
+  color: #ffffff; /* Testo bianco ben leggibile sul rosso */
   box-shadow: 0 0 14px rgba(229, 9, 20, 0.6); /* Effetto Glow rosso */
   animation: pulseSelezione 0.25s ease-in-out;
 }
 
 .posto-poltrona.selezionato:hover {
   transform: translateY(-3px);
-  background-color: var(--primary-hover); /* Sfumatura di rosso più intensa in hover */
-  border-color: #FFFFFF; /* Il bordo diventa bianco per feedback visivo */
+  background-color: var(
+    --primary-hover
+  ); /* Sfumatura di rosso più intensa in hover */
+  border-color: #ffffff; /* Il bordo diventa bianco per feedback visivo */
 }
 
 /* 3. STATO: POSTO OCCUPATO (Invariato, disattivato) */
@@ -382,8 +389,8 @@
 }
 
 .corridoio-vuoto {
-  width: 32px;
-  height: 32px;
+  width: var(--seat-size);
+  height: var(--seat-size);
   background: transparent;
 }
 
@@ -415,9 +422,16 @@
   border: 1px solid transparent;
 }
 
-.quadro.libero { background-color: var(--seat-free); border-color: #555555; }
-.quadro.selezionato { background-color: var(--seat-selected); }
-.quadro.occupato { background-color: var(--seat-occupied); }
+.quadro.libero {
+  background-color: var(--seat-free);
+  border-color: #555555;
+}
+.quadro.selezionato {
+  background-color: var(--seat-selected);
+}
+.quadro.occupato {
+  background-color: var(--seat-occupied);
+}
 
 /* ==========================================================================
    PREZZI, ERRORI & BOTTONI DI AZIONE
@@ -440,7 +454,7 @@
 }
 
 .errore {
-  color: #FF6B6B;
+  color: #ff6b6b;
   font-size: 0.85rem;
   font-weight: 600;
   margin: 12px 0 0;
@@ -505,7 +519,36 @@
 
 /* Animazione di Selezione Posto */
 @keyframes pulseSelezione {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); box-shadow: 0 0 20px rgba(229, 9, 20, 0.8); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(229, 9, 20, 0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 576px) {
+  :host {
+    --seat-size: 20px;
+    padding: 16px;
+  }
+  .mappa-sala-container {
+    padding: 12px;
+  }
+  .riga-cinema {
+    gap: 3px;
+  }
+  .etichetta-fila {
+    width: 30px;
+    margin-right: 4px;
+    font-size: 0.65rem;
+  }
+  .posto-poltrona {
+    font-size: 9px;
+    border-radius: 4px;
+  }
 }
