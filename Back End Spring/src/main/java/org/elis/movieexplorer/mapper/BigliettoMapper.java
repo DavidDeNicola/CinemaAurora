@@ -36,7 +36,7 @@ public class BigliettoMapper {
 		bigliettoDTO.setIdSpettacolo(biglietto.getSpettacolo().getId());
 		bigliettoDTO.setCodiceBiglietto(biglietto.getCodiceBiglietto());
 		bigliettoDTO.setPrezzo(biglietto.getPrezzo());
-		bigliettoDTO.setFila(String.valueOf((char) (biglietto.getPosto().getFila() + 65)));
+		bigliettoDTO.setFila(String.valueOf((char) (biglietto.getPosto().getFila() + 64)));
 		bigliettoDTO.setColonna(biglietto.getPosto().getColonna());
 		return bigliettoDTO;
 	} 

@@ -18,7 +18,7 @@ public class PostoMapper {
 			ResponsePostoBySalaDTO dto = new ResponsePostoBySalaDTO();
 			dto.setId(p.getId());
 			dto.setColonna(p.getColonna());
-			dto.setFila(String.valueOf((char) (p.getFila() + 65)));
+			dto.setFila(String.valueOf((char) (p.getFila() + 64)));
 			listaDTO.add(dto);
 		}
 		return listaDTO;
@@ -30,7 +30,7 @@ public class PostoMapper {
 			ResponsePostoBySpettacoloDTO dto = new ResponsePostoBySpettacoloDTO();
 			dto.setId(p.getId());
 			dto.setColonna(p.getColonna());
-			dto.setFila(String.valueOf((char) (p.getFila() + 65)));
+			dto.setFila(String.valueOf((char) (p.getFila() + 64)));
 			dto.setOccupato(idPostiOccupati.contains(p.getId()));
 			listaDTO.add(dto);
 		}
