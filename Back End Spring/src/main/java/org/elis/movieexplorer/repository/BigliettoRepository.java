@@ -1,5 +1,6 @@
 package org.elis.movieexplorer.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ public interface BigliettoRepository extends JpaRepository<Biglietto, Long>{
 	
 	@Query("SELECT b FROM Biglietto b JOIN b.spettacolo s WHERE s.id = :id")
 	Optional<List<Biglietto>> findByIdSpettacolo(Long id);
+
+	boolean existsByUtenteIdAndSpettacoloDataBefore(Long utenteId, LocalDate data);
 }

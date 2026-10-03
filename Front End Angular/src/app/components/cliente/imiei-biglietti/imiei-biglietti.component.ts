@@ -40,9 +40,23 @@ export class IMieiBigliettiComponent implements OnInit {
   }
 
   getSpettacoliConBiglietti() {
-    const idSpettacoliUtente = new Set(this.biglietti.map(b => b.idSpettacolo));
-    return this.spettacoli.filter(s => idSpettacoliUtente.has(s.id));
-  }
+  const idSpettacoliUtente = new Set(this.biglietti.map((b) => b.idSpettacolo));
+  const conBiglietti = this.spettacoli.filter(s => idSpettacoliUtente.has(s.id));
+
+  const futuri = conBiglietti
+    .filter(s => !this.isPassato(s))
+    .sort((a, b) => new Date(a.oraInizio).getTime() - new Date(b.oraInizio).getTime());
+
+  const passati = conBiglietti
+    .filter(s => this.isPassato(s))
+    .sort((a, b) => new Date(b.oraInizio).getTime() - new Date(a.oraInizio).getTime());
+
+  return [...futuri, ...passati];
+}
+
+isPassato(spettacolo: ResponseSpettacoloDTO): boolean {
+  return new Date(spettacolo.oraInizio).getTime() < Date.now();
+}
 
   getBigliettiPerSpettacolo(idSpettacolo: number) {
     return this.biglietti.filter(b => b.idSpettacolo === idSpettacolo);

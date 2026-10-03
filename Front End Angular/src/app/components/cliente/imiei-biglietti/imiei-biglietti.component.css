@@ -190,3 +190,18 @@
         width: 100%;
     }
 }
+
+.spettacolo-passato {
+  opacity: 0.5;
+  filter: grayscale(60%);
+}
+
+.badge-concluso {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  margin-left: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--secondary);
+  color: var(--secondary);
+  vertical-align: middle;
+}

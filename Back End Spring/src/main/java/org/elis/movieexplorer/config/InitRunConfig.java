@@ -77,42 +77,42 @@ public class InitRunConfig implements CommandLineRunner {
 			// — originali —
 			admin = adminOpt.orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.SUPERADMIN, "Admin", "System", "admin@gmail.com",
-									passwordEncoder.encode("Admin123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Admin123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			staff1 = staffOpt.orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.STAFF, "Mario", "Rossi", "staff@gmail.com",
-									passwordEncoder.encode("Staff123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Staff123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user1 = userOpt.orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Giulia", "Bianchi", "user@gmail.com",
-									passwordEncoder.encode("User123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("User123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			staff2 = utenteRepository.findUtenteByEmail("anna.neri@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.STAFF, "Anna", "Neri", "anna.neri@gmail.com",
-									passwordEncoder.encode("Staff456!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Staff456!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user2 = utenteRepository.findUtenteByEmail("marco.rossi@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Marco", "Rossi", "marco.rossi@gmail.com",
-									passwordEncoder.encode("Marco123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Marco123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user3 = utenteRepository.findUtenteByEmail("elena.verdi@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Elena", "Verdi", "elena.verdi@gmail.com",
-									passwordEncoder.encode("Elena123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Elena123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user4 = utenteRepository.findUtenteByEmail("giulia.bianchi@gmail.com")
-							.orElseGet(() -> utenteRepository.save(
+					.orElseGet(() -> utenteRepository.save(
 							new Utente(null, Ruolo.CLIENTE, "Giulia", "Bianchi", "giulia.bianchi@gmail.com",
 									passwordEncoder.encode("Giulia123!"), new ArrayList<>(), new ArrayList<>(),
 									new ArrayList<>())));
 
 			user5 = utenteRepository.findUtenteByEmail("marco.esposito@gmail.com")
-							.orElseGet(() -> utenteRepository.save(
+					.orElseGet(() -> utenteRepository.save(
 							new Utente(null, Ruolo.CLIENTE, "Marco", "Esposito", "marco.esposito@gmail.com",
 									passwordEncoder.encode("Marco123!"), new ArrayList<>(), new ArrayList<>(),
 									new ArrayList<>())));
@@ -121,50 +121,50 @@ public class InitRunConfig implements CommandLineRunner {
 			// comportamento originale preservato
 			user6 = utenteRepository.findUtenteByEmail("elena.verdi@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Elena", "Verdi", "elena.verdi@gmail.com",
-									passwordEncoder.encode("Elena123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Elena123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user7 = utenteRepository.findUtenteByEmail("davide.conti@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Davide", "Conti", "davide.conti@gmail.com",
-									passwordEncoder.encode("Davide123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Davide123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user8 = utenteRepository.findUtenteByEmail("sara.marino@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Sara", "Marino", "sara.marino@gmail.com",
-									passwordEncoder.encode("Sara123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Sara123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			// — nuovi utenti aggiuntivi —
 			staff3 = utenteRepository.findUtenteByEmail("luca.ferrari@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.STAFF, "Luca", "Ferrari", "luca.ferrari@gmail.com",
-									passwordEncoder.encode("Staff789!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Staff789!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user9 = utenteRepository.findUtenteByEmail("sofia.ricci@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Sofia", "Ricci", "sofia.ricci@gmail.com",
-									passwordEncoder.encode("Sofia123!"), new ArrayList<>(), new ArrayList<>(),
-							new ArrayList<>())));
+							passwordEncoder.encode("Sofia123!"), new ArrayList<>(), new ArrayList<>(),
+									new ArrayList<>())));
 
 			user10 = utenteRepository.findUtenteByEmail("andrea.colombo@gmail.com")
-							.orElseGet(() -> utenteRepository.save(
+					.orElseGet(() -> utenteRepository.save(
 							new Utente(null, Ruolo.CLIENTE, "Andrea", "Colombo", "andrea.colombo@gmail.com",
 									passwordEncoder.encode("Andrea123!"), new ArrayList<>(), new ArrayList<>(),
 									new ArrayList<>())));
 
 			user11 = utenteRepository.findUtenteByEmail("valentina.greco@gmail.com")
-							.orElseGet(() -> utenteRepository.save(
+					.orElseGet(() -> utenteRepository.save(
 							new Utente(null, Ruolo.CLIENTE, "Valentina", "Greco", "valentina.greco@gmail.com",
 									passwordEncoder.encode("Vale123!"), new ArrayList<>(), new ArrayList<>(),
 									new ArrayList<>())));
 
 			user12 = utenteRepository.findUtenteByEmail("francesco.bruno@gmail.com")
-							.orElseGet(() -> utenteRepository.save(
+					.orElseGet(() -> utenteRepository.save(
 							new Utente(null, Ruolo.CLIENTE, "Francesco", "Bruno", "francesco.bruno@gmail.com",
 									passwordEncoder.encode("Fran123!"), new ArrayList<>(), new ArrayList<>(),
 									new ArrayList<>())));
 
 			user13 = utenteRepository.findUtenteByEmail("chiara.fontana@gmail.com")
-							.orElseGet(() -> utenteRepository.save(
+					.orElseGet(() -> utenteRepository.save(
 							new Utente(null, Ruolo.CLIENTE, "Chiara", "Fontana", "chiara.fontana@gmail.com",
 									passwordEncoder.encode("Chiara123!"), new ArrayList<>(), new ArrayList<>(),
 									new ArrayList<>())));
@@ -467,6 +467,37 @@ public class InitRunConfig implements CommandLineRunner {
 			}
 		} catch (Exception e) {
 			System.err.println("❌ Errore durante l'emissione dei biglietti: " + e.getMessage());
+		}
+
+		// ==========================================
+		// 6b. STORICO DI PROVA (biglietti passati per user@gmail.com)
+		// ==========================================
+		try {
+			LocalDate oggi = LocalDate.now();
+			if (user1 != null && sale.size() > 2 && filmInCatalogo.size() > 9
+					&& !bigliettoRepository.existsByUtenteIdAndSpettacoloDataBefore(user1.getId(), oggi)) {
+
+				LocalDate ieri = oggi.minusDays(1);
+				LocalDate settimanaScorsa = oggi.minusDays(7);
+				Sala salaImax = sale.get(0); // IMAX Centrale
+				Sala salaRossa = sale.get(2); // Sala Rossa (NORMALE)
+
+				// Interstellar, ieri sera
+				Spettacolo passato1 = spettacoloRepository.save(new Spettacolo(null, ieri,
+						ldt(ieri, 20, 30), ldt(ieri, 23, 19), postiSala(tuttiIPosti, salaImax),
+						null, salaImax, filmInCatalogo.get(1)));
+
+				// Il Cavaliere Oscuro, una settimana fa
+				Spettacolo passato2 = spettacoloRepository.save(new Spettacolo(null, settimanaScorsa,
+						ldt(settimanaScorsa, 21, 0), ldt(settimanaScorsa, 23, 32), postiSala(tuttiIPosti, salaRossa),
+						null, salaRossa, filmInCatalogo.get(9)));
+
+				salvaBiglietto(user1, passato1, 3, 6, tuttiIPosti, BigDecimal.valueOf(12.50));
+				salvaBiglietto(user1, passato1, 3, 7, tuttiIPosti, BigDecimal.valueOf(12.50));
+				salvaBiglietto(user1, passato2, 2, 4, tuttiIPosti, BigDecimal.valueOf(7.00));
+			}
+		} catch (Exception e) {
+			System.err.println("❌ Errore durante la creazione dello storico di prova: " + e.getMessage());
 		}
 
 		// ==========================================

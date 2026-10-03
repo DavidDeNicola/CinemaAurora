@@ -2,26 +2,38 @@
     <h2 class="mb-4">I tuoi Biglietti</h2>
 
     @for (s of getSpettacoliConBiglietti(); track s.id) {
-        <div class="mb-5">
-            <h4 class="text-white-50 mb-3">{{ s.nomeFilm }} - {{ s.data | date:'fullDate' }}</h4>
+        <div class="mb-5" [class.spettacolo-passato]="isPassato(s)">
+            <h4 class="text-white-50 mb-3">
+                {{ s.nomeFilm }} - {{ s.data | date: 'fullDate' }}
+                @if (isPassato(s)) {
+                    <span class="badge-concluso">Concluso</span>
+                }
+            </h4>
 
             @for (b of getBigliettiPerSpettacolo(s.id); track b.id) {
                 <div class="ticket-wrapper mb-3 position-relative">
-
-                    <button
-                        class="btn-cancella-biglietto"
-                        [class.btn-cancella-biglietto-disabled]="!isCancellabile(s)"
-                        (click)="cancellaBiglietto(b, s)"
-                        [title]="isCancellabile(s) ? 'Cancella biglietto' : 'Non cancellabile a meno di un ora dallo spettacolo'">
-                        &times;
-                    </button>
+                    @if (!isPassato(s)) {
+                        <button
+                            class="btn-cancella-biglietto"
+                            [class.btn-cancella-biglietto-disabled]="!isCancellabile(s)"
+                            (click)="cancellaBiglietto(b, s)"
+                            [title]="
+                                isCancellabile(s)
+                                    ? 'Cancella biglietto'
+                                    : 'Non cancellabile a meno di un ora dallo spettacolo'
+                            ">
+                            &times;
+                        </button>
+                    }
 
                     <div class="ticket-info p-4 flex-grow-1">
                         <h5 class="text-uppercase fw-bold" style="color: var(--primary)">{{ s.nomeFilm }}</h5>
                         <div class="mt-3" style="color: var(--secondary)">
-                            <p class="mb-1"><strong>Orario:</strong> {{ s.oraInizio | date:'HH:mm' }}</p>
+                            <p class="mb-1"><strong>Orario:</strong> {{ s.oraInizio | date: 'HH:mm' }}</p>
                             <p class="mb-1"><strong>Sala:</strong> {{ s.nomeSala }}</p>
-                            <p class="mb-1"><strong>Prezzo:</strong> {{ b.prezzo | currency:'EUR':'symbol':'1.2-2' }}
+                            <p class="mb-1">
+                                <strong>Prezzo:</strong> {{ b.prezzo | currency: 'EUR' : 'symbol' : '1.2-2' }}
+                            </p>
                             <p class="mb-1"><strong>Fila:</strong> {{ b.fila }}</p>
                             <p class="mb-1"><strong>Colonna:</strong> {{ b.colonna }}</p>
                         </div>
