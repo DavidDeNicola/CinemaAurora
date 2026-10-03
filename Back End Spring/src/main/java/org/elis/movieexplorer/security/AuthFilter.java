@@ -62,7 +62,12 @@ public class AuthFilter extends OncePerRequestFilter {
 			upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			securityContext.setAuthentication(upat);
 		}catch (Exception e){
-			resolver.resolveException(request, response, null, e);
+			// token scaduto, firmato con un'altra chiave o utente inesistente:
+			// rispondiamo 401 così il frontend può chiedere di rifare il login
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write("{\"messaggio\":\"Sessione scaduta o non valida: effettua di nuovo il login\"}");
 			return;
 		}
 
