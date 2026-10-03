@@ -152,8 +152,31 @@
     flex-wrap: wrap;
   }
 
-  .account-dropdown {
-    left: 0;
-    right: auto;
+    .account-dropdown {
+    left: auto;
+    right: 0;
+  }
+
+    .cinema-header,
+  .cinema-navbar {
+    height: auto;
+  }
+
+  .cinema-navbar {
+    padding: 10px 16px;
+  }
+
+  .logo-container {
+    height: 56px;
+  }
+
+  .Logone {
+    max-height: 56px;
+    transform: none;
+  }
+
+  .logo-text {
+    font-size: 1.3rem;
+    white-space: nowrap;
   }
 }
