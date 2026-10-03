@@ -105,3 +105,14 @@
     height: 1px;
     background: #2a2a2a;
 }
+
+.auth-card .alert-avviso {
+  background-color: rgba(255, 193, 7, 0.12);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.auth-card .alert-avviso,
+.auth-card .alert-avviso span,
+.auth-card .alert-avviso i {
+  color: #ffc107;
+}
