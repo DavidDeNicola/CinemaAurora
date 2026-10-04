@@ -69,7 +69,7 @@ export const routes: Routes = [
       { path: 'assistenza-ticket', title: 'Assistenza Ticket', component: ChatDashboardComponent, canActivate: [chatAccessGuard], resolve: { chats: chatResolver }, runGuardsAndResolvers: 'always' },
       { path: 'biglietti-utente', title: 'Biglietti Utente', component: BigliettiUtenteComponent, canActivate: [staffGuard] },
       { path: 'gestione-spettacoli', title: 'Gestione Spettacoli', component: GestioneSpettacoliComponent, canActivate: [staffGuard], resolve: { dati: gestioneSpettacoliResolver } },
-      { path: 'ricerca', title: 'Ricerca Catalogo', component: RicercaComponent, canActivate: [staffGuard] },
+      { path: 'ricerca', title: 'Ricerca Catalogo', component: RicercaComponent, canActivate: [staffGuard], resolve: { generi: inserisciFilmResolver } },
       { path: 'statistiche', component: StatisticheComponent, canActivate: [adminGuard] },
       { path: 'i-miei-biglietti', title: 'I miei biglietti', component: IMieiBigliettiComponent, canActivate: [authGuard], resolve: { dati: iMieiBigliettiResolver } },
     ]

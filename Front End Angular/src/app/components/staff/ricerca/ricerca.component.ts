@@ -1,12 +1,30 @@
-import { Component, DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { LongOmdbResponseApiDto } from "../../../dto/omdbapi/response/long-omdb-response-api-dto";
 import { FilmService } from "../../../services/film.service";
 import { InsertFilmDTO } from "../../../dto/film/request/insert-film-dto";
 import { ResponseFilmDTO } from "../../../dto/film/response/response-film-dto";
+import { ResponseGenereDTO } from '../../../dto/genere/response/response-genere-dto';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+// Generi di OMDb (in inglese) → nomi dei generi del catalogo
+const MAPPA_GENERI: Record<string, string> = {
+  'Action': 'Azione',
+  'Sci-Fi': 'Fantascienza',
+  'Drama': 'Drammatico',
+  'Thriller': 'Thriller',
+  'Animation': 'Animazione',
+  'Comedy': 'Commedia',
+  'Horror': 'Horror',
+  'Adventure': 'Avventura',
+  'Biography': 'Biografico',
+  'Crime': 'Crime',
+  'Romance': 'Romantico',
+  'History': 'Storico'
+};
 
 @Component({
   selector: 'app-ricerca',
@@ -15,16 +33,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './ricerca.component.html',
   styleUrl: './ricerca.component.css'
 })
-export class RicercaComponent {
+export class RicercaComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
 
   stringaRicerca = '';
   filmTrovati: LongOmdbResponseApiDto[] = [];
+  generi: ResponseGenereDTO[] = [];
 
   constructor(
+    private route: ActivatedRoute,
       private filmService: FilmService,
       private confirmDialogService: ConfirmDialogService
   ) {}
+
+  ngOnInit(): void {
+    this.generi = (this.route.snapshot.data['generi'] as ResponseGenereDTO[]) ?? [];
+  }
 
   ricerca(): void {
     if (!this.stringaRicerca.trim()) {
@@ -68,7 +92,7 @@ export class RicercaComponent {
       attori: filmScelto.Actors || '',
       urlLocandina: filmScelto.Poster && filmScelto.Poster !== 'N/A' ? filmScelto.Poster : '',
       imdbID: filmScelto.imdbID && filmScelto.imdbID !== 'N/A' ? filmScelto.imdbID : '',
-      idGeneri: [1]
+      idGeneri: this.convertiGeneri(filmScelto.Genre)
     };
 
     this.filmService.insert(insertFilm).pipe(
@@ -88,6 +112,28 @@ export class RicercaComponent {
         ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
       }
     });
+  }
+
+  // "Animation, Adventure, Comedy" → id di Animazione, Avventura, Commedia
+  private convertiGeneri(genreOmdb: string | undefined): number[] {
+    if (!genreOmdb || genreOmdb === 'N/A') {
+      return this.genereDiRiserva();
+    }
+
+    const ids = genreOmdb
+      .split(',')
+      .map(g => MAPPA_GENERI[g.trim()])
+      .filter((nome): nome is string => !!nome)
+      .map(nome => this.generi.find(g => g.nome.toLowerCase() === nome.toLowerCase())?.id)
+      .filter((id): id is number => id !== undefined);
+
+    const idUnici = [...new Set(ids)];
+    return idUnici.length > 0 ? idUnici : this.genereDiRiserva();
+  }
+
+  // Se nessun genere OMDb corrisponde al catalogo, serve comunque almeno un genere
+  private genereDiRiserva(): number[] {
+    return this.generi.length > 0 ? [this.generi[0].id] : [1];
   }
 
   aggiungi(filmScelto: any): void {
