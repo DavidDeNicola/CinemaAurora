@@ -41,8 +41,9 @@ import { ChatDashboardComponent } from './components/shared/chat-dashboard/chat-
 import { GestioneSalaComponent } from './components/staff/gestione-sala/gestione-sala.component';
 import { AcquistoBigliettoComponent } from './components/shared/acquisto-biglietto/acquisto-biglietto.component';
 import { chatAccessGuard } from './guards/chat-access.guard';
+import { clienteGuard } from "./guards/cliente.guard";
 
-// prettier-ignore
+
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', title: 'HomePage', component: HomeComponent, resolve: { dati: homeResolver } },
@@ -55,7 +56,7 @@ export const routes: Routes = [
   { path: 'lista-spettacoli', title: 'Lista Spettacoli', component: ListaSpettacoliComponent, resolve: { dati: listaSpettacoliResolver } },
   { path: 'password-dimenticata', title: 'Password dimenticata', component: ForgotPasswordComponent },
   { path: 'password-reset', title: 'Password reset', component: ResetPasswordComponent },
-  { path: 'acquista-biglietto', title: 'Acquista biglietto', component: AcquistoBigliettoComponent, canActivate: [authGuard], resolve: { sala: salaResolver } },
+  { path: 'acquista-biglietto', title: 'Acquista biglietto', component: AcquistoBigliettoComponent, canActivate: [authGuard, clienteGuard], resolve: { sala: salaResolver } },
   {
     path: '',
     component: DashboardComponent,
@@ -71,7 +72,7 @@ export const routes: Routes = [
       { path: 'gestione-spettacoli', title: 'Gestione Spettacoli', component: GestioneSpettacoliComponent, canActivate: [staffGuard], resolve: { dati: gestioneSpettacoliResolver } },
       { path: 'ricerca', title: 'Ricerca Catalogo', component: RicercaComponent, canActivate: [staffGuard], resolve: { generi: inserisciFilmResolver } },
       { path: 'statistiche', component: StatisticheComponent, canActivate: [adminGuard] },
-      { path: 'i-miei-biglietti', title: 'I miei biglietti', component: IMieiBigliettiComponent, canActivate: [authGuard], resolve: { dati: iMieiBigliettiResolver } },
+      { path: 'i-miei-biglietti', title: 'I miei biglietti', component: IMieiBigliettiComponent, canActivate: [authGuard, clienteGuard], resolve: { dati: iMieiBigliettiResolver } },
     ]
   },
   { path: 'staff', loadComponent: () => import('./components/staff/staff-wrapper/staff-wrapper.component').then(m => m.StaffWrapperComponent), loadChildren: () => import('./routes/staff.routes').then(m => m.staffRoutes) },

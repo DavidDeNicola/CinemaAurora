@@ -27,6 +27,7 @@ export class DettaglioFilmComponent implements OnInit {
   loadingSpettacoli = false;
   erroreFilm: string | null = null;
   erroreSpettacoli: string | null = null;
+  isStaff = false;
 
 
   // Modale di acquisto biglietto
@@ -46,6 +47,8 @@ export class DettaglioFilmComponent implements OnInit {
     const dati = this.route.snapshot.data['dati'] as DettaglioFilmResolverData;
     this.film = dati.film;
     this.spettacoli = dati.spettacoli ?? [];
+    const ruolo = this.authService.getRuolo();
+    this.isStaff = ruolo === Ruolo.SUPERADMIN || ruolo === Ruolo.STAFF;
   }
 
   durataLabel(minuti: number): string {
