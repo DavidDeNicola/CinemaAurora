@@ -11,6 +11,7 @@ services:
     ports: !reset []
     environment:
       SERVER_FORWARD_HEADERS_STRATEGY: framework
+      JAVA_TOOL_OPTIONS: "-Xmx256m -XX:MaxMetaspaceSize=128m -XX:+UseSerialGC"
 
   mysql-cinema:
     restart: unless-stopped
