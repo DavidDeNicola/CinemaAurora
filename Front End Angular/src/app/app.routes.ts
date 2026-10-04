@@ -62,9 +62,8 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'profilo', component: ProfiloComponent },
-      { path: 'gestione-film', component: GestioneFilmComponent, resolve: { films: gestioneFilmResolver } },
+      { path: 'gestione-film', title: 'Gestione film', component: GestioneFilmComponent, canActivate: [staffGuard], resolve: { films: gestioneFilmResolver } },
       { path: 'gestione-generi', title: 'Gestione generi', component: GestioneGenereComponent, canActivate: [staffGuard], resolve: { generi: gestioneGeneriResolver } },
-      { path: 'gestione-film', title: 'Gestione film', component: GestioneFilmComponent, canActivate: [staffGuard] },
       { path: 'gestione-sala', title: 'Gestione sala', component: GestioneSalaComponent, canActivate: [staffGuard], resolve: { sale: gestioneSalaResolver } },
       { path: 'crea-staff', title: 'Crea staff', component: CreaStaffComponent, canActivate: [adminGuard] },
       { path: 'assistenza-ticket', title: 'Assistenza Ticket', component: ChatDashboardComponent, canActivate: [chatAccessGuard], resolve: { chats: chatResolver }, runGuardsAndResolvers: 'always' },
