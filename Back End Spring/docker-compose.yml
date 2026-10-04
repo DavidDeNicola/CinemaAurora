@@ -28,6 +28,7 @@ services:
       SMTP_EMAIL: ${SMTP_EMAIL:-test@example.com}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-dummy}
       JWT_KEY: ${JWT_KEY:-QuestaEUnaChiaveDiTestMoltoLungaPerJWT1234567890}
+      OMDB_KEY: ${OMDB_KEY:-}
     ports:
       - "8080:8080"
 
