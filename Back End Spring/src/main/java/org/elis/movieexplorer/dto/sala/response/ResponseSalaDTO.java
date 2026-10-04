@@ -1,12 +1,15 @@
 package org.elis.movieexplorer.dto.sala.response;
 
-import jakarta.validation.constraints.NotBlank; 
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import org.elis.movieexplorer.model.enums.Tipo;
-import org.hibernate.validator.constraints.Range;
-
 import java.util.List;
+
+import org.elis.movieexplorer.model.enums.Tipo;
+
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor

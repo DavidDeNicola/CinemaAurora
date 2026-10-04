@@ -1,10 +1,11 @@
 package org.elis.movieexplorer.controllertest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
 import org.elis.movieexplorer.GenericTest;
 import org.elis.movieexplorer.dto.sala.response.ResponseSalaDTO;
-import org.elis.movieexplorer.model.enums.Tipo;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
@@ -13,9 +14,9 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SalaTest extends GenericTest {

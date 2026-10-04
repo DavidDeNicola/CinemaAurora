@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
 
 import org.elis.movieexplorer.model.Biglietto;
 import org.elis.movieexplorer.model.Chat;
@@ -78,32 +79,32 @@ public class InitRunConfig implements CommandLineRunner {
 			admin = adminOpt.orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.SUPERADMIN, "Admin", "System", "admin@gmail.com",
 							passwordEncoder.encode("Admin123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			staff1 = staffOpt.orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.STAFF, "Mario", "Rossi", "staff@gmail.com",
 							passwordEncoder.encode("Staff123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user1 = userOpt.orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Giulia", "Bianchi", "user@gmail.com",
 							passwordEncoder.encode("User123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			staff2 = utenteRepository.findUtenteByEmail("anna.neri@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.STAFF, "Anna", "Neri", "anna.neri@gmail.com",
 							passwordEncoder.encode("Staff456!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user2 = utenteRepository.findUtenteByEmail("marco.rossi@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Marco", "Rossi", "marco.rossi@gmail.com",
 							passwordEncoder.encode("Marco123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user3 = utenteRepository.findUtenteByEmail("elena.verdi@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Elena", "Verdi", "elena.verdi@gmail.com",
 							passwordEncoder.encode("Elena123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user4 = utenteRepository.findUtenteByEmail("giulia.bianchi@gmail.com")
 					.orElseGet(() -> utenteRepository.save(
@@ -122,28 +123,28 @@ public class InitRunConfig implements CommandLineRunner {
 			user6 = utenteRepository.findUtenteByEmail("elena.verdi@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Elena", "Verdi", "elena.verdi@gmail.com",
 							passwordEncoder.encode("Elena123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user7 = utenteRepository.findUtenteByEmail("davide.conti@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Davide", "Conti", "davide.conti@gmail.com",
 							passwordEncoder.encode("Davide123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user8 = utenteRepository.findUtenteByEmail("sara.marino@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Sara", "Marino", "sara.marino@gmail.com",
 							passwordEncoder.encode("Sara123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			// — nuovi utenti aggiuntivi —
 			staff3 = utenteRepository.findUtenteByEmail("luca.ferrari@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.STAFF, "Luca", "Ferrari", "luca.ferrari@gmail.com",
 							passwordEncoder.encode("Staff789!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user9 = utenteRepository.findUtenteByEmail("sofia.ricci@gmail.com").orElseGet(() -> utenteRepository.save(
 					new Utente(null, Ruolo.CLIENTE, "Sofia", "Ricci", "sofia.ricci@gmail.com",
 							passwordEncoder.encode("Sofia123!"), new ArrayList<>(), new ArrayList<>(),
-									new ArrayList<>())));
+							new ArrayList<>())));
 
 			user10 = utenteRepository.findUtenteByEmail("andrea.colombo@gmail.com")
 					.orElseGet(() -> utenteRepository.save(
@@ -276,8 +277,8 @@ public class InitRunConfig implements CommandLineRunner {
 						"Interstellar",
 						"Un gruppo di esploratori usa un wormhole appena scoperto per superare i limiti dei viaggi spaziali umani e conquistare le vaste distanze dell'universo.",
 						169, "Matthew McConaughey, Anne Hathaway, Jessica Chastain, Michael Caine",
-						"https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWgwMjgtZTIzNWQxZGRiNDg0XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-						"https://www.youtube.com/watch?v=zSWdZVtXT7E",
+						"https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+								"https://www.youtube.com/watch?v=zSWdZVtXT7E",
 						List.of(fa, dr, av), new ArrayList<>());
 
 				Film f3 = new Film(null, "tt1375666",
@@ -333,8 +334,8 @@ public class InitRunConfig implements CommandLineRunner {
 						"Joker",
 						"Arthur Fleck, un comico fallito, porta al crimine e al caos la corrotta Gotham City. La storia mostra la sua trasformazione nel celebre criminale della DC Comics.",
 						122, "Joaquin Phoenix, Robert De Niro, Zazie Beetz, Frances Conroy",
-						"https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDCtN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SX300.jpg",
-						"https://www.youtube.com/watch?v=zAGVQLHvwOY",
+						"https://m.media-amazon.com/images/M/MV5BNzY3OWQ5NDktNWQ2OC00ZjdlLThkMmItMDhhNDk3NTFiZGU4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+								"https://www.youtube.com/watch?v=zAGVQLHvwOY",
 						List.of(cr, dr, th), new ArrayList<>());
 
 				Film f10 = new Film(null, "tt0468569",
@@ -345,20 +346,20 @@ public class InitRunConfig implements CommandLineRunner {
 						"https://www.youtube.com/watch?v=EXeTwQWrcwY",
 						List.of(az, cr, dr), new ArrayList<>());
 
-				Film f11 = new Film(null, "tt2106476",
+				Film f11 = new Film(null, "tt1663202",
 						"The Revenant - Redivivo",
 						"Un esploratore di pellicce degli anni '20 dell'Ottocento cerca vendetta contro i cacciatori che lo hanno lasciato per morto dopo un violento attacco di un orso grizzly.",
 						156, "Leonardo DiCaprio, Tom Hardy, Will Poulter, Domhnall Gleeson",
-						"https://m.media-amazon.com/images/M/MV5BMDE5OWViOWQtNjU2ZS00ZWVkLThiZjItMDg3ZmYwNWI4ZjM2XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
-						"https://www.youtube.com/watch?v=NN0f30Vf80c",
+						"https://m.media-amazon.com/images/M/MV5BYTgwNmQzZDctMjNmOS00OTExLTkwM2UtNzJmOTJhODFjOTdlXkEyXkFqcGc@._V1_QL75_UX380_CR0,1,380,562_.jpg",
+								"https://www.youtube.com/watch?v=NN0f30Vf80c",
 						List.of(dr, av), new ArrayList<>());
 
 				Film f12 = new Film(null, "tt1843866",
 						"Captain America: The Winter Soldier",
 						"Steve Rogers combatte fianco a fianco con Natasha Romanoff e il nuovo alleato Sam Wilson per svelare una cospirazione mentre affronta il pericoloso Winter Soldier.",
 						136, "Chris Evans, Scarlett Johansson, Anthony Mackie, Sebastian Stan",
-						"https://m.media-amazon.com/images/M/MV5BMzA2NDkwODAwM15BMl5BanBnXkFtZTgwODk5MTgwMTE@._V1_SX300.jpg",
-						"https://www.youtube.com/watch?v=7SlILk2WMTI",
+						"https://m.media-amazon.com/images/M/MV5BNWY1NjFmNDItZDhmOC00NjI1LWE0ZDItMTM0MjBjZThiOTQ2XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+								"https://www.youtube.com/watch?v=7SlILk2WMTI",
 						List.of(az, av, th), new ArrayList<>());
 
 				Film f13 = new Film(null, "tt0903624",
@@ -390,6 +391,31 @@ public class InitRunConfig implements CommandLineRunner {
 			}
 		} catch (Exception e) {
 			System.err.println("❌ Errore durante il popolamento dei film: " + e.getMessage());
+		}
+
+		// ==========================================
+		// 4b. CORREZIONE LOCANDINE (per database già popolati)
+		// ==========================================
+		try {
+			Map<String, String> locandineCorrette = Map.of(
+					"Interstellar",
+					"https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+					"Captain America: The Winter Soldier",
+					"https://m.media-amazon.com/images/M/MV5BNWY1NjFmNDItZDhmOC00NjI1LWE0ZDItMTM0MjBjZThiOTQ2XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+					"Joker",
+					"https://m.media-amazon.com/images/M/MV5BNzY3OWQ5NDktNWQ2OC00ZjdlLThkMmItMDhhNDk3NTFiZGU4XkEyXkFqcGc@._V1_QL75_UX380_CR0,0,380,562_.jpg",
+					"The Revenant - Redivivo",
+					"https://m.media-amazon.com/images/M/MV5BYTgwNmQzZDctMjNmOS00OTExLTkwM2UtNzJmOTJhODFjOTdlXkEyXkFqcGc@._V1_QL75_UX380_CR0,1,380,562_.jpg");
+
+			for (Film film : filmInCatalogo) {
+				String urlCorretto = locandineCorrette.get(film.getTitolo());
+				if (urlCorretto != null && !urlCorretto.equals(film.getUrlLocandina())) {
+					film.setUrlLocandina(urlCorretto);
+					filmRepository.save(film);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("❌ Errore durante la correzione delle locandine: " + e.getMessage());
 		}
 
 		// ==========================================

@@ -1,5 +1,31 @@
 package org.elis.movieexplorer.controller;
 
+import java.util.List;
+
+import org.elis.movieexplorer.dto.errore.ResponseErroreDTO;
+import org.elis.movieexplorer.dto.resetPassword.request.EditPasswordRequest;
+import org.elis.movieexplorer.dto.resetPassword.request.ResetPasswordRequest;
+import org.elis.movieexplorer.dto.resetPassword.response.ResetPasswordResponse;
+import org.elis.movieexplorer.dto.utente.request.InsertUtenteDTO;
+import org.elis.movieexplorer.dto.utente.request.LoginRequestDTO;
+import org.elis.movieexplorer.dto.utente.response.LoginResponseDTO;
+import org.elis.movieexplorer.dto.utente.response.ResponseUtenteDTO;
+import org.elis.movieexplorer.dto.utente.response.ResponseUtenteDataDTO;
+import org.elis.movieexplorer.service.definition.UtenteService;
+import org.elis.movieexplorer.utility.BadRequestApiResponse;
+import org.elis.movieexplorer.utility.SwaggerTags;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,27 +33,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
-import org.elis.movieexplorer.dto.errore.ResponseErroreDTO;
-import org.elis.movieexplorer.dto.utente.request.InsertUtenteDTO;
-import org.elis.movieexplorer.dto.utente.request.LoginRequestDTO;
-import org.elis.movieexplorer.dto.utente.response.LoginResponseDTO;
-import org.elis.movieexplorer.dto.resetPassword.request.EditPasswordRequest;
-import org.elis.movieexplorer.dto.resetPassword.request.ResetPasswordRequest;
-import org.elis.movieexplorer.dto.resetPassword.response.ResetPasswordResponse;
-import org.elis.movieexplorer.dto.utente.response.ResponseUtenteDTO;
-import org.elis.movieexplorer.dto.utente.response.ResponseUtenteDataDTO;
-import org.elis.movieexplorer.model.Utente;
-import org.elis.movieexplorer.service.definition.UtenteService;
-import org.elis.movieexplorer.utility.BadRequestApiResponse;
-import org.elis.movieexplorer.utility.SwaggerTags;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor

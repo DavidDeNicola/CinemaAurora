@@ -2,7 +2,6 @@ package org.elis.movieexplorer.controller;
 
 import java.util.List;
 
-import org.elis.movieexplorer.dto.biglietto.response.ResponseBigliettoDTO;
 import org.elis.movieexplorer.dto.errore.ResponseErroreDTO;
 import org.elis.movieexplorer.dto.posto.response.ResponsePostoBySalaDTO;
 import org.elis.movieexplorer.dto.posto.response.ResponsePostoBySpettacoloDTO;

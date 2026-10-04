@@ -1,7 +1,12 @@
 package org.elis.movieexplorer.service.jpa;
 
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.elis.movieexplorer.dto.biglietto.request.InsertBigliettoDTO;
 import org.elis.movieexplorer.dto.biglietto.response.ResponseBigliettoDTO;
 import org.elis.movieexplorer.exception.definition.MENoContentException;
@@ -10,9 +15,9 @@ import org.elis.movieexplorer.exception.definition.MEPastTicketDeletionException
 import org.elis.movieexplorer.exception.definition.MEUnprocessableEntityException;
 import org.elis.movieexplorer.mapper.BigliettoMapper;
 import org.elis.movieexplorer.model.Biglietto;
+import org.elis.movieexplorer.model.Posto;
 import org.elis.movieexplorer.model.Spettacolo;
 import org.elis.movieexplorer.model.Utente;
-import org.elis.movieexplorer.model.Posto;
 import org.elis.movieexplorer.repository.BigliettoRepository;
 import org.elis.movieexplorer.repository.PostoRepository;
 import org.elis.movieexplorer.repository.SpettacoloRepository;
@@ -20,16 +25,11 @@ import org.elis.movieexplorer.repository.UtenteRepository;
 import org.elis.movieexplorer.service.definition.BigliettoService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @ConditionalOnProperty(name="service.impl", havingValue="JPA")

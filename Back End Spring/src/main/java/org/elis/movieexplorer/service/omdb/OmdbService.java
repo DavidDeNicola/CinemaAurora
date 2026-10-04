@@ -1,18 +1,17 @@
 package org.elis.movieexplorer.service.omdb;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.elis.movieexplorer.dto.omdbapi.response.LongOmdbResponseApiDTO;
 import org.elis.movieexplorer.dto.omdbapi.response.ShortOmdbResponseApiDTO;
 import org.elis.movieexplorer.dto.omdbapi.response.ShortOmdbResponseDTO;
 import org.elis.movieexplorer.exception.definition.MEBaseException;
 import org.elis.movieexplorer.exception.definition.MENotAuthorizedException;
-import org.elis.movieexplorer.exception.definition.MEUnprocessableEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class OmdbService {

@@ -2,7 +2,6 @@ package org.elis.movieexplorer.controller;
 
 import java.util.List;
 
-import org.elis.movieexplorer.dto.biglietto.response.ResponseBigliettoDTO;
 import org.elis.movieexplorer.dto.chat.request.InsertChatDTO;
 import org.elis.movieexplorer.dto.chat.response.ResponseChatDTO;
 import org.elis.movieexplorer.dto.chat.response.ResponseInfoChatDTO;

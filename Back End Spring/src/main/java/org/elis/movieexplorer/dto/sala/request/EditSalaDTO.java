@@ -1,10 +1,13 @@
 package org.elis.movieexplorer.dto.sala.request;
 
 
-import lombok.*;
 import org.elis.movieexplorer.model.enums.Tipo;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor

@@ -3,11 +3,16 @@ package org.elis.movieexplorer.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.persistence.*;
 import org.elis.movieexplorer.model.enums.StatoChat;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,12 +1,9 @@
 package org.elis.movieexplorer.mapper;
 
 import org.elis.movieexplorer.dto.sala.response.ResponseSalaDTO;
-import org.elis.movieexplorer.model.Posto;
 import org.elis.movieexplorer.model.Sala;
 import org.elis.movieexplorer.model.Spettacolo;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class SalaMapper {

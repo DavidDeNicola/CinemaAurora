@@ -3,7 +3,6 @@ package org.elis.movieexplorer.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elis.movieexplorer.dto.biglietto.request.InsertBigliettoDTO;
 import org.elis.movieexplorer.dto.biglietto.response.ResponseBigliettoDTO;
 import org.elis.movieexplorer.model.Biglietto;
 import org.elis.movieexplorer.model.Posto;

@@ -1,13 +1,19 @@
 package org.elis.movieexplorer.exception;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import jakarta.mail.MessagingException;
+import java.security.SignatureException;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.elis.movieexplorer.dto.errore.ResponseErroreDTO;
 import org.elis.movieexplorer.dto.errore.ResponseErroreValidationDTO;
-import org.elis.movieexplorer.exception.definition.*;
-import org.springframework.dao.*;
+import org.elis.movieexplorer.exception.definition.MEBaseException;
+import org.elis.movieexplorer.exception.definition.MERegistrationErrorException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.dao.QueryTimeoutException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -18,9 +24,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 
-import java.security.SignatureException;
-import java.util.Map;
-import java.util.stream.Collectors;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {

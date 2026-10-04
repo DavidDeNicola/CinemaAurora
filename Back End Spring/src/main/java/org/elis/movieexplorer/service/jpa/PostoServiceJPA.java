@@ -2,7 +2,6 @@ package org.elis.movieexplorer.service.jpa;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.elis.movieexplorer.dto.posto.response.ResponsePostoBySalaDTO;
