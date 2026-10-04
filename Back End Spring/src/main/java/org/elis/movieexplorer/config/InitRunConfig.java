@@ -394,7 +394,7 @@ public class InitRunConfig implements CommandLineRunner {
 		}
 
 		// ==========================================
-		// 4b. CORREZIONE LOCANDINE (per database già popolati)
+		// 4b. CORREZIONE LOCANDINE E CODICI IMDb (per database già popolati)
 		// ==========================================
 		try {
 			Map<String, String> locandineCorrette = Map.of(
@@ -411,6 +411,18 @@ public class InitRunConfig implements CommandLineRunner {
 				String urlCorretto = locandineCorrette.get(film.getTitolo());
 				if (urlCorretto != null && !urlCorretto.equals(film.getUrlLocandina())) {
 					film.setUrlLocandina(urlCorretto);
+					filmRepository.save(film);
+				}
+			}
+
+			// Codici IMDb sbagliati nel seeder originale
+			Map<String, String> codiciImdbCorretti = Map.of(
+					"The Revenant - Redivivo", "tt1663202");
+
+			for (Film film : filmInCatalogo) {
+				String codiceCorretto = codiciImdbCorretti.get(film.getTitolo());
+				if (codiceCorretto != null && !codiceCorretto.equals(film.getImdbID())) {
+					film.setImdbID(codiceCorretto);
 					filmRepository.save(film);
 				}
 			}
