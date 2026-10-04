@@ -36,6 +36,8 @@ jobs:
         run: echo "JWT_KEY=$(openssl rand -hex 64)" >> "$GITHUB_ENV"
 
       - name: Esegui i test
+        env:
+          OMDB_KEY: ${{ secrets.OMDB_KEY }}
         run: mvn -B test
 
   deploy:
