@@ -16,3 +16,4 @@ services:
   mysql-cinema:
     restart: unless-stopped
     ports: !reset []
+    command: --performance-schema=OFF --innodb-buffer-pool-size=64M --max-connections=30
