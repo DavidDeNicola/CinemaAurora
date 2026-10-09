@@ -175,6 +175,21 @@ public class InitRunConfig implements CommandLineRunner {
 		}
 
 		// ==========================================
+		// 1b. UTENTI USATI DAI TEST (password comune: Password1!)
+		// ==========================================
+		try {
+			creaUtenteSeNonEsiste("Luca", "Bianchi", "luca.bianchi@movieexplorer.it", Ruolo.STAFF);
+			creaUtenteSeNonEsiste("Giulia", "Verdi", "giulia.verdi@movieexplorer.it", Ruolo.STAFF);
+			creaUtenteSeNonEsiste("Marco", "Neri", "marco.neri@gmail.com", Ruolo.CLIENTE);
+			creaUtenteSeNonEsiste("Anna", "Ferrari", "anna.ferrari@gmail.com", Ruolo.CLIENTE);
+			creaUtenteSeNonEsiste("Paolo", "Romano", "paolo.romano@email.it", Ruolo.CLIENTE);
+			creaUtenteSeNonEsiste("Sara", "Colombo", "sara.colombo@email.it", Ruolo.CLIENTE);
+			creaUtenteSeNonEsiste("Federico", "Ricci", "federico.ricci@email.it", Ruolo.CLIENTE);
+		} catch (Exception e) {
+			System.err.println("❌ Errore durante il popolamento degli utenti di test: " + e.getMessage());
+		}
+
+		// ==========================================
 		// 2. SALE E POSTI
 		// ==========================================
 		List<Sala> sale = new ArrayList<>();
@@ -797,6 +812,13 @@ public class InitRunConfig implements CommandLineRunner {
 	}
 
 	// ── helpers ──────────────────────────────────────────────────────────────
+
+	/** Crea l'utente solo se l'email non è ancora registrata */
+	private Utente creaUtenteSeNonEsiste(String nome, String cognome, String email, Ruolo ruolo) {
+		return utenteRepository.findUtenteByEmail(email).orElseGet(() -> utenteRepository.save(
+				new Utente(null, ruolo, nome, cognome, email, passwordEncoder.encode("Password1!"),
+						new ArrayList<>(), new ArrayList<>(), new ArrayList<>())));
+	}
 
 	/** Costruisce un LocalDateTime da una LocalDate con ora e minuto indicati */
 	private LocalDateTime ldt(LocalDate giorno, int ora, int minuto) {
