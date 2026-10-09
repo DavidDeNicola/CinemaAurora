@@ -51,9 +51,9 @@ public class MySecurityConfig {
 		config.sessionManagement(t -> t.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		config.authorizeHttpRequests(t -> {
 			t.requestMatchers("/admin/**").hasRole(Ruolo.SUPERADMIN.getNome());
-			t.requestMatchers("/staff/**").hasAnyRole(Ruolo.STAFF.getNome(), Ruolo.SUPERADMIN.getNome());
+			t.requestMatchers("/staff/**").hasRole(Ruolo.STAFF.getNome());
 			t.requestMatchers("/cliente/**").hasRole(Ruolo.CLIENTE.getNome());
-			t.requestMatchers("/user/**").hasAnyRole(Ruolo.CLIENTE.getNome(),Ruolo.STAFF.getNome(),Ruolo.SUPERADMIN.getNome());
+			t.requestMatchers("/user/**").hasAnyRole(Ruolo.CLIENTE.getNome(), Ruolo.STAFF.getNome());
 
 			t.anyRequest().permitAll();	
 		});

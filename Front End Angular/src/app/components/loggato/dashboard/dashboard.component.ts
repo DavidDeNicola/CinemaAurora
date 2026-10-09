@@ -76,6 +76,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     private aggiornaNotificheChat(): void {
+        // il SuperAdmin non partecipa alle chat di assistenza
+        if (this.userRole === 'SUPERADMIN') return;
+
         this.subs.add(
             this.chatService.chatNonLette().subscribe({
                 next: (numeroChatNonLette) => (this.nuoviMessaggi = numeroChatNonLette > 0),
