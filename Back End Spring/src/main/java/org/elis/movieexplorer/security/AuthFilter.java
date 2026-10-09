@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +24,6 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 	private final UserDetailsService userDetailsService;
-	@SuppressWarnings("unused")
 	private final HandlerExceptionResolver resolver;
 	private final JwtUtils jwtUtilities;
 
@@ -34,22 +34,26 @@ public class AuthFilter extends OncePerRequestFilter {
 		this.jwtUtilities = jwtUtilities;
 	}
 
-	
+
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
 	        throws ServletException, IOException {
-		try{
-			// controlliamo che l'utente non sia già stato autenticato da un filtro precedente
-			SecurityContext securityContext = SecurityContextHolder.getContext();
-			String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-			boolean isAuthenticated = securityContext.getAuthentication() != null;
-			// se è già stato autenticato: mando avanti la filter chain ed esco fuori dal metodo
-			if(authHeader == null || isAuthenticated || !authHeader.startsWith("Bearer")) {
-				filterChain.doFilter(request, response);
-				return;
-			}
+		// controlliamo che l'utente non sia già stato autenticato da un filtro precedente
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		boolean isAuthenticated = securityContext.getAuthentication() != null;
+		// nessun token o utente già autenticato: mando avanti la filter chain ed esco fuori dal metodo
+		// (fuori dal try: gli errori dei filtri successivi non sono errori del token)
+		if(authHeader == null || isAuthenticated || !authHeader.startsWith("Bearer ")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
+		try{
 			String token = authHeader.substring(7);
+			if(token.isBlank())
+				throw new BadCredentialsException("Token mancante");
+
 			String username = jwtUtilities.getSubject(token);
 			UserDetails utente = userDetailsService.loadUserByUsername(username);
 			// classe che estende Authentication
@@ -62,16 +66,15 @@ public class AuthFilter extends OncePerRequestFilter {
 			upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			securityContext.setAuthentication(upat);
 		}catch (Exception e){
-			// token scaduto, firmato con un'altra chiave o utente inesistente:
-			// rispondiamo 401 così il frontend può chiedere di rifare il login
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write("{\"messaggio\":\"Sessione scaduta o non valida: effettua di nuovo il login\"}");
+			// token scaduto, manomesso o utente inesistente.
+			// Il filtro lavora PRIMA dei controller, quindi il @RestControllerAdvice
+			// non vedrebbe questa eccezione: la inoltriamo noi al CustomExceptionHandler,
+			// che risponde 401 con il formato di errore standard
+			resolver.resolveException(request, response, null, e);
 			return;
 		}
 
 		filterChain.doFilter(request, response);
 	}
-	
+
 }
