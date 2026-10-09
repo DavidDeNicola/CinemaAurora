@@ -46,16 +46,8 @@ export class ChatService {
     );
   }
 
-  cambioStato(idChat: number){
-    return this.http.patch(`${this.BASE_URL}/staff/cambioStato`, idChat);
-  }
-
   chatNonLette(): Observable<number>{
     return this.http.get<number>(`${this.BASE_URL}/user/contatore`);
-  }
-
-  checkMessaggiNonLetti(): Observable<number>{
-    return this.http.get<number>(`${this.BASE_URL}/user/contatoreChatNonLette`);
   }
   
 }
