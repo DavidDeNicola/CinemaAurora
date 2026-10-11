@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {InsertFilmDTO} from '../dto/film/request/insert-film-dto';
-import {finalize, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ResponseFilmDTO} from '../dto/film/response/response-film-dto';
 import {EditFilmDTO} from '../dto/film/request/edit-film-dto';
 import {LongOmdbResponseApiDto} from '../dto/omdbapi/response/long-omdb-response-api-dto';
-import {SharedService} from "./shared.service";
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -14,10 +13,7 @@ import { environment } from '../../environments/environment';
 export class FilmService {
   private BASE_URL = environment.apiUrl;
 
-  constructor(
-      private http: HttpClient,
-      private sharedService: SharedService
-  ) {}
+  constructor(private http: HttpClient) {}
 
 
   insert(dto: InsertFilmDTO): Observable<ResponseFilmDTO> {
@@ -43,12 +39,9 @@ export class FilmService {
 
 
   findByTitolo(titolo: string): Observable<LongOmdbResponseApiDto[]> {
-    this.sharedService.loading = true;
     return this.http.get<LongOmdbResponseApiDto[]>(
       `${this.BASE_URL}/film/titolo`,
       { params: { titolo } }
-    ).pipe(
-        finalize(() => this.sharedService.loading = false)
     );
   }
 

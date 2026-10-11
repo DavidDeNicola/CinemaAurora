@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {SharedService} from "./shared.service";
 import {ResponsePostoSpettacoloDto} from "../dto/post/response/response-posto-dto";
 import { environment } from '../../environments/environment';
 
@@ -11,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class PostoService {
   private BASE_URL = environment.apiUrl;
 
-  constructor(private http: HttpClient, private sharedService: SharedService) {}
+  constructor(private http: HttpClient) {}
 
   findBySpettacolo(id:number): Observable<ResponsePostoSpettacoloDto[]> {
     return this.http.get<ResponsePostoSpettacoloDto[]>(`${this.BASE_URL}/cliente/posto/${id}`);

@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {InsertGenereDTO} from '../dto/genere/request/insert-genere-dto';
-import {finalize, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {ResponseGenereDTO} from '../dto/genere/response/response-genere-dto';
 import {EditGenereDTO} from '../dto/genere/request/edit-genere-dto';
-import {SharedService} from "./shared.service";
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -13,7 +12,7 @@ import { environment } from '../../environments/environment';
 export class GenereService {
   private BASE_URL = environment.apiUrl;
 
-  constructor(private http: HttpClient, private sharedService: SharedService) {}
+  constructor(private http: HttpClient) {}
 
 
   insert(dto: InsertGenereDTO): Observable<ResponseGenereDTO> {
@@ -30,30 +29,22 @@ export class GenereService {
 
 
   findById(id: number): Observable<ResponseGenereDTO> {
-    this.sharedService.loading = true;
-
-    return this.http.get<ResponseGenereDTO>(`${this.BASE_URL}/genere/${id}`)
-        .pipe(finalize(() => this.sharedService.loading = false)
-    );
+    return this.http.get<ResponseGenereDTO>(`${this.BASE_URL}/genere/${id}`);
   }
 
 
   findByIdFilm(idFilm: number): Observable<ResponseGenereDTO[]> {
-    this.sharedService.loading = true;
-
     return this.http.get<ResponseGenereDTO[]>(
       `${this.BASE_URL}/genere/film/${idFilm}`
-    ).pipe(finalize(() => this.sharedService.loading = false));
+    );
   }
 
 
   editById(id: number, dto: EditGenereDTO): Observable<ResponseGenereDTO> {
-    this.sharedService.loading = true;
-
     return this.http.patch<ResponseGenereDTO>(
       `${this.BASE_URL}/staff/genere/${id}`,
       dto
-    ).pipe(finalize(() => this.sharedService.loading = false));
+    );
   }
 
 

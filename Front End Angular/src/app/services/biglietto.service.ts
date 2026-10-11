@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {finalize, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {InsertBigliettoDTO} from '../dto/biglietto/request/insert-biglietto-dto';
 import {ResponseBigliettoDTO} from '../dto/biglietto/response/response-biglietto-dto';
-import {SharedService} from "./shared.service";
 import { environment } from '../../environments/environment';
 
 @Injectable({
