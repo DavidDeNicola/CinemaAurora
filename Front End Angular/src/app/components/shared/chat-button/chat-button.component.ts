@@ -31,10 +31,9 @@ export class ChatButtonComponent {
 
     this.dialog.open(ChatDialogComponent, {
       width: '28vw',
-      height: '58vh',
       maxWidth: '400px',
-      maxHeight: '600px',
       minWidth: '320px',
+      maxHeight: '90vh',
       hasBackdrop: true,
       autoFocus: false,
     });
