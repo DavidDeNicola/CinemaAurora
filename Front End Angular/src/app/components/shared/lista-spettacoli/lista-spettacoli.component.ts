@@ -33,7 +33,6 @@ export class ListaSpettacoliComponent implements OnInit {
     spettacoli: ResponseSpettacoloDTO[] = [];
     films: ResponseFilmDTO[] = [];
     spettacoliFiltrati: ResponseSpettacoloDTO[] = [];
-    errore: string | null = null;
     messaggio: string | null = null;
     prenotazioniInCorso = new Set<string>();
     spettacoliSelezionati: Record<string, ResponseSpettacoloDTO> = {};
@@ -43,7 +42,6 @@ export class ListaSpettacoliComponent implements OnInit {
 
     dataSelezionata: string = '';
     oggi: string = new Date().toISOString().split('T')[0];
-    loading = false;
 
     /**
      * Restituisce true se lo spettacolo non è ancora iniziato.
@@ -145,7 +143,6 @@ export class ListaSpettacoliComponent implements OnInit {
         if (spettacolo.postiRimanenti === 0) return;
         this.spettacoliSelezionati[this.selectionKey(data, filmKey)] = spettacolo;
         this.messaggio = null;
-        this.errore = null;
     }
 
     spettacoloSelezionato(data: string, filmKey: string): ResponseSpettacoloDTO | undefined {
@@ -182,7 +179,6 @@ export class ListaSpettacoliComponent implements OnInit {
             quantita === 1
                 ? `Acquisto confermato per ${orario}.`
                 : `Acquisto confermato per ${quantita} biglietti alle ${orario}.`;
-        this.errore = null;
         this.chiudiModaleAcquisto();
         this.confirmDialogService
             .notifySuccess(

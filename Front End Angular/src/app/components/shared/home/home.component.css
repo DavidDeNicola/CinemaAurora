@@ -142,10 +142,6 @@ h1 {
   padding: 24px;
 }
 
-.status-card.error {
-  color: var(--primary);
-}
-
 .movie-card,
 .schedule-card {
   background: var(--surface);

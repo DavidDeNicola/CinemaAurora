@@ -21,17 +21,7 @@
         </label>
     </section>
 
-    @if (loading) {
-        <section class="empty-state">
-            <h2>Caricamento film...</h2>
-            <p>Sto recuperando i titoli dal backend.</p>
-        </section>
-    } @else if (errore) {
-        <section class="empty-state error">
-            <h2>Errore</h2>
-            <p>{{ errore }}</p>
-        </section>
-    } @else if (filmFiltrati.length) {
+    @if (filmFiltrati.length) {
         <section class="movie-grid">
             @for (film of filmFiltrati; track film.id; let i = $index) {
                 <article class="movie-card">

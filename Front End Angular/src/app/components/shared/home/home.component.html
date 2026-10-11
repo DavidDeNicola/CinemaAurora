@@ -24,11 +24,7 @@
       <a routerLink="/lista-film" class="btn btn-secondary">Vedi tutti</a>
     </div>
 
-    @if (loadingFilm) {
-      <div class="status-card">Caricamento film...</div>
-    } @else if (erroreFilm) {
-      <div class="status-card error">{{ erroreFilm }}</div>
-    } @else if (filmInEvidenza.length === 0) {
+    @if (filmInEvidenza.length === 0) {
       <div class="status-card">
         Nessun film disponibile.
       </div>
@@ -63,11 +59,7 @@
       </div>
     </div>
 
-    @if (loadingSpettacoli) {
-      <div class="status-card">Caricamento spettacoli...</div>
-    } @else if (erroreSpettacoli) {
-      <div class="status-card error">{{ erroreSpettacoli }}</div>
-    } @else if (spettacoliOggi.length === 0) {
+    @if (spettacoliOggi.length === 0) {
       <div class="status-card">
         Nessuno spettacolo disponibile oggi.
       </div>

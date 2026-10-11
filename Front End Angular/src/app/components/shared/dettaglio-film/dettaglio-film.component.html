@@ -1,15 +1,7 @@
 <main class="detail-page">
     <a routerLink="/lista-film" class="back-link">Torna alla lista film</a>
 
-    @if (loadingFilm) {
-    <section class="status-card">
-        Caricamento film...
-    </section>
-    } @else if (erroreFilm) {
-    <section class="status-card error">
-        {{ erroreFilm }}
-    </section>
-    } @else if (film) {
+    @if (film) {
     <section class="detail-hero">
         <div class="poster-shell">
             @if (!film.urlLocandina) {
@@ -53,11 +45,7 @@
         <div class="status-card success m-5">{{ messaggioAcquisto }}</div>
         }
 
-        @if (loadingSpettacoli) {
-        <div class="status-card">Caricamento spettacoli...</div>
-        } @else if (erroreSpettacoli) {
-        <div class="status-card error">{{ erroreSpettacoli }}</div>
-        } @else if (spettacoli.length === 0) {
+        @if (spettacoli.length === 0) {
         <div class="status-card">
             Nessuno spettacolo disponibile per questo film.
         </div>

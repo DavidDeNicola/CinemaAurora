@@ -16,9 +16,6 @@ import {Ruolo} from "./enums/ruolo";
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'CinemaFront';
-
-
   constructor(
       private sharedService: SharedService,
       private authService: AuthService
@@ -28,7 +25,7 @@ export class AppComponent {
     return this.sharedService.loading;
   }
 
-  get isAuthenticated() {
+  get isCliente() {
     const ruolo = this.authService.getRuolo();
     return this.authService.isLoggedIn()
         && (ruolo === Ruolo.CLIENTE);

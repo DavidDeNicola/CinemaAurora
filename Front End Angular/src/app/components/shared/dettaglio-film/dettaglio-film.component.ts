@@ -23,10 +23,6 @@ export class DettaglioFilmComponent implements OnInit {
   film?: ResponseFilmDTO;
   spettacoli: ResponseSpettacoloDTO[] = [];
 
-  loadingFilm = false;
-  loadingSpettacoli = false;
-  erroreFilm: string | null = null;
-  erroreSpettacoli: string | null = null;
   isStaff = false;
 
 

@@ -341,12 +341,6 @@ h3 {
   margin: 0;
 }
 
-.empty-state.error,
-.empty-state.error h2,
-.empty-state.error p {
-  color: var(--primary);
-}
-
 .empty-state.success,
 .empty-state.success h2 {
   color: var(--text);

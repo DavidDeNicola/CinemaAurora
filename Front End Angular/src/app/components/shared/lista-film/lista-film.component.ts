@@ -16,8 +16,6 @@ export class ListaFilmComponent implements OnInit {
     ricerca = '';
     genereSelezionato = 'Tutti';
 
-    loading = false;
-    errore: string | null = null;
 
     constructor(private route: ActivatedRoute) {}
 
@@ -59,11 +57,6 @@ export class ListaFilmComponent implements OnInit {
 
     posterClass(index: number): string {
         return ['poster red', 'poster dark-red', 'poster gray', 'poster'][index % 4];
-    }
-
-    private caricaFilm(): void {
-        this.loading = true;
-        this.errore = null;
     }
 
     handleMissingImage(event: Event) {

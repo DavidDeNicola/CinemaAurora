@@ -17,10 +17,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     spettacoli: ResponseSpettacoloDTO[] = [];
     adesso = new Date();
 
-    loadingFilm = false;
-    loadingSpettacoli = false;
-    erroreFilm: string | null = null;
-    erroreSpettacoli: string | null = null;
     private timerAggiornamento?: ReturnType<typeof setInterval>;
 
     constructor(private route: ActivatedRoute) {}

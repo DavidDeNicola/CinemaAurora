@@ -19,20 +19,6 @@
     </div>
   </section>
 
-  @if (loading) {
-  <section class="empty-state">
-    <h2>Caricamento spettacoli...</h2>
-    <p>Sto recuperando la programmazione dal backend.</p>
-  </section>
-  }
-
-  @if (errore) {
-  <section class="empty-state error">
-    <h2>Errore</h2>
-    <p>{{ errore }}</p>
-  </section>
-  }
-
   @if (messaggio) {
   <section class="empty-state success">
     <h2>Prenotazione</h2>
@@ -40,14 +26,14 @@
   </section>
   }
 
-  @if (!loading && spettacoliFiltrati.length === 0 && !errore) {
+  @if (spettacoliFiltrati.length === 0) {
   <section class="empty-state">
     <h2>Nessuno spettacolo trovato</h2>
     <p>Modifica la data per visualizzare altri spettacoli.</p>
   </section>
   }
 
-  @if (!loading && spettacoliFiltrati.length > 0) {
+  @if (spettacoliFiltrati.length > 0) {
   @for (gruppo of gruppiPerData; track gruppo.data) {
   <section class="day-section">
     <header class="day-header">
