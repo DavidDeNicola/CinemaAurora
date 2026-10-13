@@ -16,7 +16,7 @@
         <h3>{{ film.titolo }}</h3>
 
         @if (film.durata) {
-            <p class="meta">{{ durataLabel(film.durata) }}</p>
+            <p class="meta">{{ film.durata | durata }}</p>
         }
 
         @if (film.descrizione) {
@@ -26,11 +26,11 @@
         <dl class="dettagli-spettacolo">
             <div class="riga">
                 <dt>Data</dt>
-                <dd>{{ formatData(spettacolo.data) | titlecase }}</dd>
+                <dd>{{ spettacolo.data | date:'EEEE dd MMMM y' | titlecase }}</dd>
             </div>
             <div class="riga">
                 <dt>Orario</dt>
-                <dd>{{ formatOrario(spettacolo.oraInizio) }} - {{ formatOrario(spettacolo.oraFine) }}</dd>
+                <dd>{{ spettacolo.oraInizio | orario }} - {{ spettacolo.oraFine | orario }}</dd>
             </div>
             <div class="riga">
                 <dt>Sala</dt>

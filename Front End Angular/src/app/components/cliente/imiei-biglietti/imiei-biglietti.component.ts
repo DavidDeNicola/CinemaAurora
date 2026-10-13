@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, DestroyRef, inject } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { QRCodeComponent } from 'angularx-qrcode';
 import { ResponseBigliettoDTO } from "../../../dto/biglietto/response/response-biglietto-dto";
 import { BigliettoService } from "../../../services/biglietto.service";
@@ -9,7 +9,6 @@ import { AuthService } from "../../../services/auth.service";
 import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
 import { ActivatedRoute } from "@angular/router";
 import { IMieiBigliettiResolverData } from "../../../app.resolver";
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-imiei-biglietti',
@@ -19,7 +18,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './imiei-biglietti.component.css'
 })
 export class IMieiBigliettiComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
 
   biglietti: ResponseBigliettoDTO[] = [];
   spettacoli: ResponseSpettacoloDTO[] = [];
@@ -73,7 +71,7 @@ isPassato(spettacolo: ResponseSpettacoloDTO): boolean {
       this.confirmDialogService.notifyInfo(
           'Non è più possibile cancellare il biglietto a meno di un’ora dall’inizio dello spettacolo.',
           'Cancellazione non disponibile'
-      ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+      ).subscribe();
       return;
     }
 
@@ -84,29 +82,25 @@ isPassato(spettacolo: ResponseSpettacoloDTO): boolean {
       title: 'Annulla biglietto',
       message: `Sei sicuro di voler cancellare questo biglietto per "${spettacolo.nomeFilm}"?`,
       confirmText: 'Elimina'
-    }).pipe(
-        takeUntilDestroyed(this.destroyRef)
-    ).subscribe(conferma => {
+    }).subscribe(conferma => {
       if (!conferma) {
         return;
       }
 
-      this.bigliettoService.removeById(biglietto.id, email).pipe(
-          takeUntilDestroyed(this.destroyRef)
-      ).subscribe({
+      this.bigliettoService.removeById(biglietto.id, email).subscribe({
         next: () => {
           this.biglietti = this.biglietti.filter(b => b.id !== biglietto.id);
           this.confirmDialogService.notifySuccess(
               'Il biglietto è stato cancellato correttamente.',
               'Biglietto cancellato'
-          ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+          ).subscribe();
         },
         error: (err) => {
           console.error('Errore durante la cancellazione del biglietto:', err);
           this.confirmDialogService.notifyError(
               err?.error?.message || 'Impossibile cancellare il biglietto.',
               'Cancellazione non riuscita'
-          ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+          ).subscribe();
         }
       });
     });

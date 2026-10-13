@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { FilmService } from '../../../services/film.service';
-import { GenereService } from '../../../services/genere.service';
 import { ResponseGenereDTO } from '../../../dto/genere/response/response-genere-dto';
 import { InsertFilmDTO } from '../../../dto/film/request/insert-film-dto';
 import { finalize } from 'rxjs';

@@ -10,7 +10,7 @@ import { SalaService } from '../../../services/sala.service';
 import { ResponseFilmDTO } from '../../../dto/film/response/response-film-dto';
 import { ResponseSpettacoloDTO } from '../../../dto/spettacolo/response/response-spettacolo-dto';
 import { ResponseSalaDTO } from '../../../dto/sala/response/response-sala-dto';
-import {Tipo} from "../../../enums/tipo";
+import { OrarioPipe } from '../../../pipes/orario.pipe';
 
 export interface StatFilm {
   film: ResponseFilmDTO;
@@ -40,7 +40,7 @@ export interface StatSala {
 @Component({
   selector: 'app-statistiche',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, OrarioPipe],
   templateUrl: './statistiche.component.html',
   styleUrl: './statistiche.component.css'
 })
@@ -251,18 +251,6 @@ export class StatisticheComponent implements OnInit {
   }
 
   // ── Utility template ─────────────────────────────────────────
-  formatOrario(ora: string): string {
-    if (!ora) return '';
-    const part = ora.includes('T') ? ora.split('T')[1] : ora.includes(' ') ? ora.split(' ')[1] : ora;
-    return part?.slice(0, 5) ?? '';
-  }
-
-  formatData(data: string): string {
-    if (!data) return '';
-    const [y, m, d] = data.split('-');
-    return `${d}/${m}/${y}`;
-  }
-
   formatEuro(valore: number): string {
     return valore.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
   }

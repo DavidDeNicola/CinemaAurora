@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {InsertMessaggioDTO} from "../dto/message/request/InsertMessaggioDTO";
 import {map, Observable, switchMap} from "rxjs";
-import {ResponseMessaggioDTO} from "../dto/message/response/ResponseMessaggioDTO";
 import {InsertChatDTO} from "../dto/chat/request/InsertChatDTO";
 import {ResponseChatDTO} from "../dto/chat/response/ResponseChatDTO";
 import {ResponseInfoChatDTO} from "../dto/chat/response/ResponseInfoChatDTO";

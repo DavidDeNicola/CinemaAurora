@@ -188,14 +188,6 @@ h1 {
   padding: 24px;
 }
 
-.status-card.error {
-  color: var(--primary);
-}
-
-.status-card.success {
-  color: #7DDC8B;
-}
-
 .schedule-card {
   display: flex;
   flex-direction: column;

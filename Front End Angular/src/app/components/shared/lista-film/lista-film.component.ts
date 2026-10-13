@@ -3,10 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ResponseFilmDTO } from '../../../dto/film/response/response-film-dto';
+import { DurataPipe } from '../../../pipes/durata.pipe';
+import { GeneriPipe } from '../../../pipes/generi.pipe';
 
 @Component({
     selector: 'app-lista-film',
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, DurataPipe, GeneriPipe],
     templateUrl: './lista-film.component.html',
     standalone: true,
     styleUrl: './lista-film.component.css',
@@ -43,16 +45,6 @@ export class ListaFilmComponent implements OnInit {
 
             return matchTesto && matchGenere;
         });
-    }
-
-    durataLabel(minuti: number): string {
-        const ore = Math.floor(minuti / 60);
-        const restanti = minuti % 60;
-        return ore > 0 ? `${ore}h ${restanti.toString().padStart(2, '0')}m` : `${restanti}m`;
-    }
-
-    generiLabel(film: ResponseFilmDTO): string {
-        return film.nomeGeneri?.length ? film.nomeGeneri.join(' / ') : 'Genere non specificato';
     }
 
     posterClass(index: number): string {

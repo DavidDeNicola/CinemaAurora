@@ -34,10 +34,10 @@
                     </div>
 
                     <div class="movie-info">
-                        <p class="eyebrow">{{ generiLabel(film) }}</p>
+                        <p class="eyebrow">{{ film.nomeGeneri | generi }}</p>
                         <h2>{{ film.titolo }}</h2>
                         <p class="description">{{ film.descrizione }}</p>
-                        <p class="movie-meta">{{ durataLabel(film.durata) }} - {{ film.attori }}</p>
+                        <p class="movie-meta">{{ film.durata | durata }} - {{ film.attori }}</p>
                         <a [routerLink]="['/dettaglio-film', film.id]" class="btn btn-primary">Dettaglio film</a>
                     </div>
                 </article>

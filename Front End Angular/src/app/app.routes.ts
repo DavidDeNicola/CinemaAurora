@@ -3,9 +3,9 @@ import { HomeComponent } from './components/shared/home/home.component';
 import { PageNotFoundComponent } from './components/shared/page-not-found/page-not-found.component';
 import { ListaFilmComponent } from './components/shared/lista-film/lista-film.component';
 import { DettaglioFilmComponent } from './components/shared/dettaglio-film/dettaglio-film.component';
-import { GestioneFilmComponent } from './components/film/gestione-film/gestione-film.component';
-import { InserisciFilmComponent } from './components/film/inserisci-film/inserisci-film.component';
-import { GestioneGenereComponent } from './components/film/gestione-generi/gestione-generi.component';
+import { GestioneFilmComponent } from './components/staff/gestione-film/gestione-film.component';
+import { InserisciFilmComponent } from './components/staff/inserisci-film/inserisci-film.component';
+import { GestioneGenereComponent } from './components/staff/gestione-generi/gestione-generi.component';
 import { RegistrazioneComponent } from './components/shared/registrazione/registrazione.component';
 import { LoginComponent } from './components/shared/login/login.component';
 import { ListaSpettacoliComponent } from './components/shared/lista-spettacoli/lista-spettacoli.component';
@@ -45,36 +45,52 @@ import { clienteGuard } from "./guards/cliente.guard";
 
 
 export const routes: Routes = [
+  // ── Pagine pubbliche ────────────────────────────────────────────
   { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: 'home', title: 'HomePage', component: HomeComponent, resolve: { dati: homeResolver } },
+  { path: 'home', title: 'Home', component: HomeComponent, resolve: { dati: homeResolver } },
   { path: 'faq', title: 'FAQ', component: FaqSectionComponent },
   { path: 'lista-film', title: 'Lista film', component: ListaFilmComponent, resolve: { films: filmListResolver } },
   { path: 'dettaglio-film/:id', title: 'Dettaglio film', component: DettaglioFilmComponent, resolve: { dati: dettaglioFilmResolver } },
-  { path: 'inserisci-film', title: 'Inserisci film', component: InserisciFilmComponent, canActivate: [staffGuard], resolve: { generi: inserisciFilmResolver } },
+  { path: 'lista-spettacoli', title: 'Lista spettacoli', component: ListaSpettacoliComponent, resolve: { dati: listaSpettacoliResolver } },
   { path: 'login', title: 'Login', component: LoginComponent },
   { path: 'registrazione', title: 'Registrazione', component: RegistrazioneComponent },
-  { path: 'lista-spettacoli', title: 'Lista Spettacoli', component: ListaSpettacoliComponent, resolve: { dati: listaSpettacoliResolver } },
   { path: 'password-dimenticata', title: 'Password dimenticata', component: ForgotPasswordComponent },
-  { path: 'password-reset', title: 'Password reset', component: ResetPasswordComponent },
+  { path: 'password-reset', title: 'Reimposta password', component: ResetPasswordComponent },
+
+  // ── Pagine a tutto schermo per un solo ruolo ────────────────────
   { path: 'acquista-biglietto', title: 'Acquista biglietto', component: AcquistoBigliettoComponent, canActivate: [authGuard, clienteGuard], resolve: { sala: salaResolver } },
+  { path: 'inserisci-film', title: 'Inserisci film', component: InserisciFilmComponent, canActivate: [authGuard, staffGuard], resolve: { generi: inserisciFilmResolver } },
+
+  // ── Area riservata: la dashboard con la barra laterale ──────────
+  // authGuard vale per tutte le pagine figlie; ogni figlia controlla poi il suo ruolo.
   {
     path: '',
     component: DashboardComponent,
     canActivate: [authGuard],
     children: [
-      { path: 'profilo', component: ProfiloComponent },
+      // tutti i ruoli
+      { path: 'profilo', title: 'Profilo', component: ProfiloComponent },
+
+      // CLIENTE
+      { path: 'i-miei-biglietti', title: 'I miei biglietti', component: IMieiBigliettiComponent, canActivate: [clienteGuard], resolve: { dati: iMieiBigliettiResolver } },
+
+      // CLIENTE e STAFF
+      { path: 'assistenza-ticket', title: 'Assistenza', component: ChatDashboardComponent, canActivate: [chatAccessGuard], resolve: { chats: chatResolver }, runGuardsAndResolvers: 'always' },
+
+      // STAFF
       { path: 'gestione-film', title: 'Gestione film', component: GestioneFilmComponent, canActivate: [staffGuard], resolve: { films: gestioneFilmResolver } },
       { path: 'gestione-generi', title: 'Gestione generi', component: GestioneGenereComponent, canActivate: [staffGuard], resolve: { generi: gestioneGeneriResolver } },
-      { path: 'gestione-sala', title: 'Gestione sala', component: GestioneSalaComponent, canActivate: [staffGuard], resolve: { sale: gestioneSalaResolver } },
-      { path: 'crea-staff', title: 'Crea staff', component: CreaStaffComponent, canActivate: [adminGuard] },
-      { path: 'assistenza-ticket', title: 'Assistenza Ticket', component: ChatDashboardComponent, canActivate: [chatAccessGuard], resolve: { chats: chatResolver }, runGuardsAndResolvers: 'always' },
-      { path: 'biglietti-utente', title: 'Biglietti Utente', component: BigliettiUtenteComponent, canActivate: [staffGuard] },
-      { path: 'gestione-spettacoli', title: 'Gestione Spettacoli', component: GestioneSpettacoliComponent, canActivate: [staffGuard], resolve: { dati: gestioneSpettacoliResolver } },
-      { path: 'ricerca', title: 'Ricerca Catalogo', component: RicercaComponent, canActivate: [staffGuard], resolve: { generi: inserisciFilmResolver } },
-      { path: 'statistiche', component: StatisticheComponent, canActivate: [adminGuard] },
-      { path: 'i-miei-biglietti', title: 'I miei biglietti', component: IMieiBigliettiComponent, canActivate: [authGuard, clienteGuard], resolve: { dati: iMieiBigliettiResolver } },
+      { path: 'gestione-sala', title: 'Gestione sale', component: GestioneSalaComponent, canActivate: [staffGuard], resolve: { sale: gestioneSalaResolver } },
+      { path: 'gestione-spettacoli', title: 'Gestione spettacoli', component: GestioneSpettacoliComponent, canActivate: [staffGuard], resolve: { dati: gestioneSpettacoliResolver } },
+      { path: 'biglietti-utente', title: 'Biglietti utente', component: BigliettiUtenteComponent, canActivate: [staffGuard] },
+      { path: 'ricerca', title: 'Ricerca catalogo', component: RicercaComponent, canActivate: [staffGuard], resolve: { generi: inserisciFilmResolver } },
+
+      // SUPERADMIN
+      { path: 'crea-staff', title: 'Gestione staff', component: CreaStaffComponent, canActivate: [adminGuard] },
+      { path: 'statistiche', title: 'Statistiche', component: StatisticheComponent, canActivate: [adminGuard] },
     ]
   },
-  { path: 'staff', loadComponent: () => import('./components/staff/staff-wrapper/staff-wrapper.component').then(m => m.StaffWrapperComponent), loadChildren: () => import('./routes/staff.routes').then(m => m.staffRoutes) },
+
+  // ── Qualsiasi altro URL → pagina 404 (deve restare l'ultima) ────
   { path: '**', title: 'Pagina non trovata', component: PageNotFoundComponent }
 ];

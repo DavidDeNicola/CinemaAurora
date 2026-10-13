@@ -6,10 +6,10 @@ import { AuthService } from '../../../services/auth.service';
 import { ResponseSpettacoloDTO } from '../../../dto/spettacolo/response/response-spettacolo-dto';
 import { ResponseFilmDTO } from '../../../dto/film/response/response-film-dto';
 import { Ruolo } from '../../../enums/ruolo';
-import { AcquistoBigliettoComponent } from '../acquisto-biglietto/acquisto-biglietto.component';
-import { ConfirmDialogService } from '../../../services/confirm-dialog.service';
-import { ResponseBigliettoDTO } from '../../../dto/biglietto/response/response-biglietto-dto';
 import { ListaSpettacoliResolverData } from '../../../app.resolver';
+import { DurataPipe } from '../../../pipes/durata.pipe';
+import { OrarioPipe } from '../../../pipes/orario.pipe';
+import { GeneriPipe } from '../../../pipes/generi.pipe';
 
 export interface SpettacoloPerFilm {
     filmKey: string;
@@ -25,7 +25,7 @@ export interface GruppoData {
 @Component({
     selector: 'app-lista-spettacoli',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
+    imports: [CommonModule, FormsModule, RouterLink, DurataPipe, OrarioPipe, GeneriPipe],
     templateUrl: './lista-spettacoli.component.html',
     styleUrl: './lista-spettacoli.component.css',
 })
@@ -33,49 +33,25 @@ export class ListaSpettacoliComponent implements OnInit {
     spettacoli: ResponseSpettacoloDTO[] = [];
     films: ResponseFilmDTO[] = [];
     spettacoliFiltrati: ResponseSpettacoloDTO[] = [];
-    messaggio: string | null = null;
-    prenotazioniInCorso = new Set<string>();
     spettacoliSelezionati: Record<string, ResponseSpettacoloDTO> = {};
 
     isStaff: boolean = false;
-    utenteCorrente: any;
 
     dataSelezionata: string = '';
     oggi: string = new Date().toISOString().split('T')[0];
-
-    /**
-     * Restituisce true se lo spettacolo non è ancora iniziato.
-     * Confronta data + oraInizio con il momento attuale.
-     */
-    isFuturo(spettacolo: ResponseSpettacoloDTO): boolean {
-        const timePart = spettacolo.oraInizio.includes('T')
-            ? spettacolo.oraInizio.split('T')[1]
-            : spettacolo.oraInizio.includes(' ')
-              ? spettacolo.oraInizio.split(' ')[1]
-              : spettacolo.oraInizio;
-        const ora = timePart?.substring(0, 5) ?? '00:00'; // "HH:mm"
-        const dataOraSpettacolo = new Date(`${spettacolo.data}T${ora}:00`);
-        return dataOraSpettacolo > new Date();
-    }
-
-    // Modale di acquisto biglietto
-    modaleAperta = false;
-    filmInAcquisto: ResponseFilmDTO | null = null;
-    spettacoloInAcquisto: ResponseSpettacoloDTO | null = null;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private confirmDialogService: ConfirmDialogService,
     ) {}
 
     ngOnInit(): void {
         const dati = this.route.snapshot.data['dati'] as ListaSpettacoliResolverData;
         this.films = dati.films ?? [];
-        this.spettacoli = (dati.spettacoli ?? []).filter((s) => this.isFuturo(s));
+        this.spettacoli = dati.spettacoli ?? [];
         const ruolo = this.authService.getRuolo();
-        this.isStaff = ruolo === 'SUPERADMIN' || ruolo === 'STAFF';
+        this.isStaff = ruolo === Ruolo.SUPERADMIN || ruolo === Ruolo.STAFF;
         this.spettacoliFiltrati = this.spettacoli;
         this.inizializzaSelezioni();
     }
@@ -100,10 +76,6 @@ export class ListaSpettacoliComponent implements OnInit {
         this.inizializzaSelezioni();
     }
 
-    isCliente(): boolean {
-        return this.authService.isLoggedIn() && this.authService.getRuolo() === Ruolo.CLIENTE;
-    }
-
     getFilmById(idFilm?: number): ResponseFilmDTO | undefined {
         if (!idFilm) return undefined;
         return this.films.find((f) => f.id === idFilm);
@@ -116,33 +88,9 @@ export class ListaSpettacoliComponent implements OnInit {
         );
     }
 
-    formatOrario(ora: string): string {
-        if (!ora) return '';
-        const timePart = ora.includes('T') ? ora.split('T')[1] : ora.includes(' ') ? ora.split(' ')[1] : ora;
-        return timePart?.substring(0, 5) ?? '';
-    }
-
-    formatData(data: string): string {
-        if (!data) return '';
-        const d = new Date(data + 'T00:00:00');
-        return d.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-    }
-
-    durataLabel(durata: number): string {
-        if (!durata) return '';
-        const ore = Math.floor(durata / 60);
-        const minuti = durata % 60;
-        return ore ? `${ore}h ${minuti}m` : `${minuti}m`;
-    }
-
-    generiLabel(film: ResponseFilmDTO): string {
-        return film.nomeGeneri?.length ? film.nomeGeneri.join(' / ') : 'Cinema';
-    }
-
     selezionaSpettacolo(data: string, filmKey: string, spettacolo: ResponseSpettacoloDTO): void {
         if (spettacolo.postiRimanenti === 0) return;
         this.spettacoliSelezionati[this.selectionKey(data, filmKey)] = spettacolo;
-        this.messaggio = null;
     }
 
     spettacoloSelezionato(data: string, filmKey: string): ResponseSpettacoloDTO | undefined {
@@ -154,43 +102,12 @@ export class ListaSpettacoliComponent implements OnInit {
     }
 
     prenota(film: ResponseFilmDTO, spettacolo: ResponseSpettacoloDTO): void {
-        if (this.isStaff) {
-            alert('Gli utenti dello staff non possono prenotare biglietti.');
-            return;
-        }
         this.router.navigateByUrl('/acquista-biglietto', {
             state: {
                 spettacolo,
                 film,
             },
         });
-    }
-
-    chiudiModaleAcquisto(): void {
-        this.modaleAperta = false;
-        this.filmInAcquisto = null;
-        this.spettacoloInAcquisto = null;
-    }
-
-    onAcquistoConfermato(biglietti: ResponseBigliettoDTO[]): void {
-        const orario = this.spettacoloInAcquisto ? this.formatOrario(this.spettacoloInAcquisto.oraInizio) : '';
-        const quantita = biglietti.length;
-        this.messaggio =
-            quantita === 1
-                ? `Acquisto confermato per ${orario}.`
-                : `Acquisto confermato per ${quantita} biglietti alle ${orario}.`;
-        this.chiudiModaleAcquisto();
-        this.confirmDialogService
-            .notifySuccess(
-                quantita === 1
-                    ? `Il tuo biglietto per le ${orario} è stato acquistato con successo.`
-                    : `I tuoi ${quantita} biglietti per le ${orario} sono stati acquistati con successo.`,
-            )
-            .subscribe();
-    }
-
-    isPrenotazioneInCorso(data: string, filmKey: string): boolean {
-        return this.prenotazioniInCorso.has(this.selectionKey(data, filmKey));
     }
 
     get gruppiPerData(): GruppoData[] {
@@ -211,9 +128,7 @@ export class ListaSpettacoliComponent implements OnInit {
                 filmsDelGiorno: Array.from(mappaFilm.entries()).map(([filmKey, spettacoli]) => ({
                     filmKey,
                     film: this.getFilmBySpettacolo(spettacoli[0]) ?? this.filmFallback(spettacoli[0].nomeFilm),
-                    spettacoli: spettacoli.sort((a, b) =>
-                        this.formatOrario(a.oraInizio).localeCompare(this.formatOrario(b.oraInizio)),
-                    ),
+                    spettacoli: spettacoli.sort((a, b) => a.oraInizio.localeCompare(b.oraInizio)),
                 })),
             }));
     }

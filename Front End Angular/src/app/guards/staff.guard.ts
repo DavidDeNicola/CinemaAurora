@@ -1,12 +1,15 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Ruolo } from '../enums/ruolo';
 
+// Lascia passare solo lo STAFF
 export const staffGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
+  const authService = inject(AuthService);
   const router = inject(Router);
-  const ruolo = auth.getRuolo();
-  if (ruolo === 'STAFF') return true;
+
+  if (authService.getRuolo() === Ruolo.STAFF) return true;
+
   router.navigateByUrl('/home');
   return false;
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, DestroyRef, inject } from '@angular/core'; // 👈 Aggiunti DestroyRef e inject
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FilmService } from "../../../services/film.service";
@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
 import { finalize } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-gestione-film',
@@ -20,7 +19,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './gestione-film.component.css'
 })
 export class GestioneFilmComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
 
   films: ResponseFilmDTO[] = [];
   filmInserito = false;
@@ -50,14 +48,10 @@ export class GestioneFilmComponent implements OnInit {
   ngOnInit(): void {
     this.films = (this.route.snapshot.data['films'] as ResponseFilmDTO[]) ?? [];
 
-    this.route.queryParams.pipe(
-        takeUntilDestroyed(this.destroyRef)
-    ).subscribe(params => {
-      if (params['filmInserito'] === 'true') {
-        this.filmInserito = true;
-        setTimeout(() => this.filmInserito = false, 4000);
-      }
-    });
+    if (this.route.snapshot.queryParamMap.get('filmInserito') === 'true') {
+      this.filmInserito = true;
+      setTimeout(() => this.filmInserito = false, 4000);
+    }
   }
 
   apriModifica(film: ResponseFilmDTO): void {

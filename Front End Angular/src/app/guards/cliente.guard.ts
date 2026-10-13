@@ -3,11 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Ruolo } from '../enums/ruolo';
 
+// Lascia passare solo il CLIENTE
 export const clienteGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
+  const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (auth.getRuolo() === Ruolo.CLIENTE) return true;
+  if (authService.getRuolo() === Ruolo.CLIENTE) return true;
 
   router.navigateByUrl('/home');
   return false;

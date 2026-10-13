@@ -200,8 +200,8 @@
                             @for (item of spettacoliFiltrati; track item.spettacolo.id) {
                                 <tr>
                                     <td class="stat-film-titolo">{{ item.spettacolo.nomeFilm }}</td>
-                                    <td>{{ formatData(item.spettacolo.data) }}</td>
-                                    <td class="stat-secondary">{{ formatOrario(item.spettacolo.oraInizio) }}</td>
+                                    <td>{{ item.spettacolo.data | date:'dd/MM/yyyy' }}</td>
+                                    <td class="stat-secondary">{{ item.spettacolo.oraInizio | orario }}</td>
                                     <td>{{ item.spettacolo.nomeSala }}</td>
                                     <td class="stat-num">{{ item.capienza }}</td>
                                     <td class="stat-num">{{ item.totaleBiglietti }}</td>

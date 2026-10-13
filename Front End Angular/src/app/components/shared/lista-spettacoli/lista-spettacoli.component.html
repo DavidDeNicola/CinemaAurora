@@ -19,13 +19,6 @@
     </div>
   </section>
 
-  @if (messaggio) {
-  <section class="empty-state success">
-    <h2>Prenotazione</h2>
-    <p>{{ messaggio }}</p>
-  </section>
-  }
-
   @if (spettacoliFiltrati.length === 0) {
   <section class="empty-state">
     <h2>Nessuno spettacolo trovato</h2>
@@ -42,7 +35,7 @@
         <small>{{ gruppo.data | date:'MMM' : '' : 'it' }}</small>
       </div>
       <div>
-        <h2>{{ formatData(gruppo.data) | titlecase }}</h2>
+        <h2>{{ gruppo.data | date:'EEEE dd MMMM y' | titlecase }}</h2>
         <p>{{ gruppo.filmsDelGiorno.length }} film in programma</p>
       </div>
     </header>
@@ -59,12 +52,12 @@
         </div>
 
         <div class="card-body">
-          <p class="eyebrow">{{ generiLabel(entry.film) }}</p>
+          <p class="eyebrow">{{ entry.film.nomeGeneri | generi }}</p>
           <h3>{{ entry.film.titolo }}</h3>
 
           <p class="movie-meta">
             @if (entry.film.durata) {
-            <span>{{ durataLabel(entry.film.durata) }}</span>
+            <span>{{ entry.film.durata | durata }}</span>
             }
             @if (entry.film.attori) {
             <span>{{ entry.film.attori }}</span>
@@ -76,7 +69,7 @@
             <button type="button" class="time-chip" [class.active]="isOrarioSelezionato(gruppo.data, entry.filmKey, s)"
               [disabled]="s.postiRimanenti === 0" (click)="selezionaSpettacolo(gruppo.data, entry.filmKey, s)"
               [title]="s.nomeSala + ' - ' + (s.postiRimanenti === 0 ? 'esaurito' : s.postiRimanenti + ' posti')">
-              {{ formatOrario(s.oraInizio) }} - {{ formatOrario(s.oraFine) }}
+              {{ s.oraInizio | orario }} - {{ s.oraFine | orario }}
             </button>
             }
             </div>

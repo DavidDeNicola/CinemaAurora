@@ -1,17 +1,14 @@
-import { Component, OnInit, DestroyRef, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ResponseSpettacoloDTO } from "../../../dto/spettacolo/response/response-spettacolo-dto";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { SpettacoloService } from "../../../services/spettacolo.service";
 import { InsertSpettacoloDTO } from "../../../dto/spettacolo/request/insert-spettacolo-dto";
 import { CommonModule } from "@angular/common";
-import { FilmService } from "../../../services/film.service";
-import { SalaService } from "../../../services/sala.service";
 import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
 import { ResponseFilmDTO } from "../../../dto/film/response/response-film-dto";
 import { ResponseSalaDTO } from "../../../dto/sala/response/response-sala-dto";
 import { ActivatedRoute } from "@angular/router";
 import { GestioneSpettacoliResolverData } from "../../../app.resolver";
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-gestione-spettacoli',
@@ -23,7 +20,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     styleUrl: './gestione-spettacoli.component.css'
 })
 export class GestioneSpettacoliComponent implements OnInit {
-    private destroyRef = inject(DestroyRef);
 
     spettacoli: ResponseSpettacoloDTO[] = [];
     listaFilm: ResponseFilmDTO[] = [];
@@ -112,7 +108,6 @@ export class GestioneSpettacoliComponent implements OnInit {
         if (this.formSpettacolo.valid) {
             const formValue = this.formSpettacolo.value;
             const filmSelezionato = this.filmSelezionato;
-            const salaSelezionata = this.listaSale.find(sala => sala.id === formValue.idSala);
 
             if (!filmSelezionato?.durata) {
                 this.erroreInserimento = 'Seleziona un film valido per calcolare la durata dello spettacolo.';
@@ -144,43 +139,13 @@ export class GestioneSpettacoliComponent implements OnInit {
             this.erroreInserimento = null;
             this.successoInserimento = null;
 
-            this.spettacoloService.insert(spettacolo).pipe(
-                takeUntilDestroyed(this.destroyRef)
-            ).subscribe({
+            this.spettacoloService.insert(spettacolo).subscribe({
                 next: () => {
-                    this.spettacoloService.findByData(dataSpettacolo || '').pipe(
-                        takeUntilDestroyed(this.destroyRef)
-                    ).subscribe({
-                        next: (spettacoliInData) => {
-                            const spettacoloInserito = spettacoliInData.find(s =>
-                                s.idFilm === spettacolo.idFilm &&
-                                s.data === spettacolo.data &&
-                                s.oraInizio === spettacolo.oraInizio &&
-                                (!salaSelezionata || s.nomeSala === salaSelezionata.nome)
-                            );
-
-                            if (!spettacoloInserito) {
-                                this.successoInserimento = null;
-                                this.erroreInserimento = 'Il backend ha risposto alla richiesta ma non ha salvato davvero lo spettacolo. Riavvia il backend in esecuzione e ricompilalo, perché al momento sta esponendo ancora una versione vecchia dell’endpoint.';
-                                return;
-                            }
-
-                            this.formSpettacolo.reset();
-                            this.successoInserimento = `Spettacolo programmato. Fine automatica prevista: ${oraFineStimata}.`;
-                            this.erroreInserimento = null;
-                            this.spettacoloService.findAll().pipe(
-                                takeUntilDestroyed(this.destroyRef)
-                            ).subscribe(s => this.spettacoli = s);
-                        },
-                        error: () => {
-                            this.successoInserimento = null;
-                            this.erroreInserimento = 'Il backend ha accettato la richiesta ma non restituisce il nuovo spettacolo. Riavvia il backend in esecuzione e ricompilalo prima di riprovare.';
-                        }
-                    });
+                    this.formSpettacolo.reset();
+                    this.successoInserimento = `Spettacolo programmato. Fine automatica prevista: ${oraFineStimata}.`;
+                    this.spettacoloService.findAll().subscribe(s => this.spettacoli = s);
                 },
                 error: (err) => {
-                    console.error("Errore durante l'inserimento dello spettacolo", err);
-                    this.successoInserimento = null;
                     this.erroreInserimento = this.estraiMessaggioErrore(err);
                 }
             });
@@ -208,7 +173,7 @@ export class GestioneSpettacoliComponent implements OnInit {
         }
 
         if (err?.status === 0) {
-            return 'Il backend non è raggiungibile. Verifica che il server su localhost:8080 sia avviato.';
+            return 'Il server non è raggiungibile. Riprova tra poco.';
         }
 
         return err?.error?.message || `Impossibile inserire lo spettacolo (HTTP ${err?.status ?? 'sconosciuto'}). Controlla conflitti di sala e orari.`;
@@ -219,24 +184,18 @@ export class GestioneSpettacoliComponent implements OnInit {
             title: 'Elimina spettacolo',
             message: 'Sei sicuro di voler eliminare questo spettacolo?',
             confirmText: 'Elimina'
-        }).pipe(
-            takeUntilDestroyed(this.destroyRef)
-        ).subscribe(conferma => {
+        }).subscribe(conferma => {
             if (!conferma) {
                 return;
             }
 
-            this.spettacoloService.removeById(id).pipe(
-                takeUntilDestroyed(this.destroyRef)
-            ).subscribe({
+            this.spettacoloService.removeById(id).subscribe({
                 next:() =>{
                     this.spettacoli = this.spettacoli.filter(s => s.id !== id);
-                    this.confirmDialogService.notifySuccess('Spettacolo rimosso con successo.').pipe(
-                        takeUntilDestroyed(this.destroyRef)
-                    ).subscribe();
+                    this.confirmDialogService.notifySuccess('Spettacolo rimosso con successo.', 'Spettacolo eliminato').subscribe();
                 },
                 error: (err) => {
-                    console.log('Errore durante la rimozione del spettacolo');
+                    this.confirmDialogService.notifyError(err?.error?.message || 'Impossibile eliminare lo spettacolo.').subscribe();
                 }
             });
         });

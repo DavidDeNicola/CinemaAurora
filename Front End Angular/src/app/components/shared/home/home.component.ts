@@ -4,10 +4,13 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import { ResponseFilmDTO } from '../../../dto/film/response/response-film-dto';
 import { ResponseSpettacoloDTO } from '../../../dto/spettacolo/response/response-spettacolo-dto';
 import { HomeResolverData } from '../../../app.resolver';
+import { DurataPipe } from '../../../pipes/durata.pipe';
+import { OrarioPipe } from '../../../pipes/orario.pipe';
+import { GeneriPipe } from '../../../pipes/generi.pipe';
 
 @Component({
     selector: 'app-home',
-    imports: [CommonModule, RouterLink],
+    imports: [CommonModule, RouterLink, DurataPipe, OrarioPipe, GeneriPipe],
     templateUrl: './home.component.html',
     standalone: true,
     styleUrl: './home.component.css',
@@ -48,30 +51,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             .sort(
                 (a, b) => this.timestampSpettacolo(a.oraInizio, a.data) - this.timestampSpettacolo(b.oraInizio, b.data),
             );
-    }
-
-    durataLabel(minuti: number): string {
-        const ore = Math.floor(minuti / 60);
-        const restanti = minuti % 60;
-        return ore > 0 ? `${ore}h ${restanti.toString().padStart(2, '0')}m` : `${restanti}m`;
-    }
-
-    generiLabel(film: ResponseFilmDTO): string {
-        return film.nomeGeneri?.length ? film.nomeGeneri.join(' / ') : 'Cinema';
-    }
-
-    orario(isoDateTime: string): string {
-        if (!isoDateTime) return '';
-        const timePart = isoDateTime.includes('T')
-            ? isoDateTime.split('T')[1]
-            : isoDateTime.includes(' ')
-              ? isoDateTime.split(' ')[1]
-              : isoDateTime;
-        return timePart.slice(0, 5);
-    }
-
-    fasciaOraria(spettacolo: ResponseSpettacoloDTO): string {
-        return `${this.orario(spettacolo.oraInizio)} - ${this.orario(spettacolo.oraFine)}`;
     }
 
     spettacoloInCorso(spettacolo: ResponseSpettacoloDTO): boolean {

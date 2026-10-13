@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LongOmdbResponseApiDto } from "../../../dto/omdbapi/response/long-omdb-response-api-dto";
 import { FilmService } from "../../../services/film.service";
@@ -8,7 +8,6 @@ import { ResponseGenereDTO } from '../../../dto/genere/response/response-genere-
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // Generi di OMDb (in inglese) → nomi dei generi del catalogo
 const MAPPA_GENERI: Record<string, string> = {
@@ -34,7 +33,6 @@ const MAPPA_GENERI: Record<string, string> = {
   styleUrl: './ricerca.component.css'
 })
 export class RicercaComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
 
   stringaRicerca = '';
   filmTrovati: LongOmdbResponseApiDto[] = [];
@@ -55,22 +53,14 @@ export class RicercaComponent implements OnInit {
       return;
     }
 
-    this.filmService.findByTitolo(this.stringaRicerca).pipe(
-        takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      next: (res: any) => {
-        console.log('Dati ricevuti dal server:', res);
-
-        if (Array.isArray(res) && res.length > 0) {
-          this.filmTrovati = res;
-        } else if (res && res.Title) {
-          this.filmTrovati = [res];
-        } else {
-          this.filmTrovati = [];
+    this.filmService.findByTitolo(this.stringaRicerca).subscribe({
+      next: (risultati) => {
+        this.filmTrovati = risultati;
+        if (risultati.length === 0) {
           this.confirmDialogService.notifyInfo(
               'Film non trovato nel database globale di OMDb.',
               'Nessun risultato'
-          ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+          ).subscribe();
         }
       },
       error: (err) => {
@@ -79,7 +69,7 @@ export class RicercaComponent implements OnInit {
         this.confirmDialogService.notifyError(
             'Impossibile recuperare il film. Controlla i servizi backend e riprova.',
             'Errore ricerca'
-        ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+        ).subscribe();
       }
     });
   }
@@ -95,21 +85,19 @@ export class RicercaComponent implements OnInit {
       idGeneri: this.convertiGeneri(filmScelto.Genre)
     };
 
-    this.filmService.insert(insertFilm).pipe(
-        takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
+    this.filmService.insert(insertFilm).subscribe({
       next: (res: ResponseFilmDTO) => {
         this.confirmDialogService.notifySuccess(
             `"${res.titolo}" salvato con successo.`,
             'Film importato'
-        ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+        ).subscribe();
       },
       error: (err) => {
         console.error('Errore durante il salvataggio del film.', err);
         this.confirmDialogService.notifyError(
             'Impossibile salvare il film selezionato. Riprova tra un attimo.',
             'Errore importazione'
-        ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+        ).subscribe();
       }
     });
   }
@@ -139,15 +127,13 @@ export class RicercaComponent implements OnInit {
   aggiungi(filmScelto: any): void {
     const imdbId = filmScelto.imdbID;
 
-    this.filmService.existsByImdbId(imdbId).pipe(
-        takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
+    this.filmService.existsByImdbId(imdbId).subscribe({
       next: (esiste: boolean) => {
         if (esiste) {
           this.confirmDialogService.notifyInfo(
               'Questo film è già presente nel database.',
               'Film già presente'
-          ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+          ).subscribe();
         } else {
           this.eseguiInserimento(filmScelto);
         }
@@ -157,7 +143,7 @@ export class RicercaComponent implements OnInit {
         this.confirmDialogService.notifyError(
             'Impossibile verificare se il film è già presente nel database.',
             'Errore controllo'
-        ).pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+        ).subscribe();
       }
     });
   }

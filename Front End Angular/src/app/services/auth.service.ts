@@ -6,7 +6,6 @@ import { EditPasswordRequest } from "../dto/resetpassword/request/edit-password-
 import { ResetPasswordResponse } from "../dto/resetpassword/response/reset-password-response";
 import { ResetPasswordRequest } from "../dto/resetpassword/request/reset-password-request";
 import { jwtDecode } from "jwt-decode";
-import { ResponseUtenteDataDTO } from "../dto/utente/response/response-utente-data-dto";
 import { ResponseUtenteDTO } from "../dto/utente/response/response-utente-dto";
 import { InsertUtenteDTO } from "../dto/utente/request/insert-utente-dto";
 import { environment } from "../../environments/environment";
@@ -40,13 +39,6 @@ export class AuthService {
     );
   }
 
-  aggiungiStaff(dto: InsertUtenteDTO): Observable<ResponseUtenteDTO> {
-    return this.http.post<ResponseUtenteDTO>(
-      `${this.BASE_URL}/admin/aggiungi_staff`,
-      dto,
-    );
-  }
-
   editPassword(dto: EditPasswordRequest): Observable<ResetPasswordResponse> {
     return this.http.patch<ResetPasswordResponse>(
       `${this.BASE_URL}/edit_password`,
@@ -65,24 +57,6 @@ export class AuthService {
       `${this.BASE_URL}/reset_password`,
       dto,
     );
-  }
-
-  getAllStaff(): Observable<ResponseUtenteDataDTO[]> {
-    return this.http.get<ResponseUtenteDataDTO[]>(
-      `${this.BASE_URL}/admin/lista_staff`,
-    );
-  }
-
-  eliminaStaff(id: number): Observable<ResponseUtenteDTO> {
-    return this.http.delete<ResponseUtenteDTO>(
-      `${this.BASE_URL}/admin/staff/${id}`,
-    );
-  }
-
-  eliminaStaffByEmail(email: string): Observable<ResponseUtenteDTO> {
-    return this.http.delete<ResponseUtenteDTO>(`${this.BASE_URL}/admin/staff`, {
-      params: { email },
-    });
   }
 
   getToken(): string | null {

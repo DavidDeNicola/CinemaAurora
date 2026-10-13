@@ -1,5 +1,5 @@
 export interface ResponseUtenteDataDTO {
-  id?: number;
+  id: number;
   nome: string;
   cognome: string;
   email: string;

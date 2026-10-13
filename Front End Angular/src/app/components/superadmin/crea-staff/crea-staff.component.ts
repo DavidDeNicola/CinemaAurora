@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "../../../services/auth.service";
+import {StaffService} from "../../../services/staff.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ResponseUtenteDataDTO} from "../../../dto/utente/response/response-utente-data-dto";
 import {ConfirmDialogService} from "../../../services/confirm-dialog.service";
@@ -20,11 +20,11 @@ export class CreaStaffComponent implements OnInit {
   messaggioErrore: string | null = null;
 
   constructor(
-    private formbuiler: FormBuilder,
-    private authService: AuthService,
+    private formBuilder: FormBuilder,
+    private staffService: StaffService,
     private confirmDialogService: ConfirmDialogService
   ) {
-    this.staffForm = this.formbuiler.group({
+    this.staffForm = this.formBuilder.group({
       nome: ['', Validators.required],
       cognome: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -38,7 +38,7 @@ export class CreaStaffComponent implements OnInit {
     this.caricaListaStaff();
   }
   caricaListaStaff(): void {
-    this.authService.getAllStaff().subscribe({
+    this.staffService.findAll().subscribe({
       next: (data) => {
         this.listaStaff = data;
       },
@@ -48,7 +48,7 @@ export class CreaStaffComponent implements OnInit {
 
   onSubmit(): void {
     if (this.staffForm.valid) {
-      this.authService.aggiungiStaff(this.staffForm.value).subscribe({
+      this.staffService.insert(this.staffForm.value).subscribe({
         next: () => {
           this.messaggioSuccesso = 'Staff aggiunto con successo.';
           this.messaggioErrore = null;
@@ -77,13 +77,9 @@ export class CreaStaffComponent implements OnInit {
         return;
       }
 
-      const richiestaEliminazione = staff.id
-        ? this.authService.eliminaStaff(staff.id)
-        : this.authService.eliminaStaffByEmail(staff.email);
-
-      richiestaEliminazione.subscribe({
+      this.staffService.removeById(staff.id).subscribe({
         next: () => {
-          this.listaStaff = this.listaStaff.filter(s => s.email !== staff.email);
+          this.listaStaff = this.listaStaff.filter(s => s.id !== staff.id);
           this.messaggioErrore = null;
           this.confirmDialogService.notifySuccess(
             `${staff.nome} ${staff.cognome} è stato eliminato dallo staff.`,
@@ -91,21 +87,11 @@ export class CreaStaffComponent implements OnInit {
           ).subscribe();
         },
         error: (err) => {
-          this.messaggioErrore = this.estraiMessaggioEliminazione(err);
+          this.messaggioErrore = err?.error?.message || 'Errore durante l\'eliminazione dello staff.';
           this.messaggioSuccesso = null;
           this.confirmDialogService.notifyError(this.messaggioErrore, 'Eliminazione non riuscita').subscribe();
         }
       });
     });
-  }
-
-  private estraiMessaggioEliminazione(err: any): string {
-    const messaggioBackend = err?.error?.message || '';
-
-    if (err?.status === 404 && messaggioBackend.includes('admin/staff')) {
-      return 'Il backend in esecuzione non è ancora aggiornato con l’endpoint di eliminazione staff. Riavvia il backend e riprova.';
-    }
-
-    return messaggioBackend || 'Errore durante l\'eliminazione dello staff.';
   }
 }

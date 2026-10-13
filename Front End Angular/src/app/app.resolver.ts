@@ -53,7 +53,7 @@ export const homeResolver: ResolveFn<HomeResolverData> = () => {
   });
 };
 
-// lista-spettacoli → carica tutti gli spettacoli + tutti i film
+// lista-spettacoli → carica gli spettacoli futuri + tutti i film
 
 export interface ListaSpettacoliResolverData {
   spettacoli: ResponseSpettacoloDTO[];
@@ -62,7 +62,9 @@ export interface ListaSpettacoliResolverData {
 
 export const listaSpettacoliResolver: ResolveFn<ListaSpettacoliResolverData> = () => {
   return forkJoin({
-    spettacoli: inject(SpettacoloService).findAll(),
+    spettacoli: inject(SpettacoloService).findAll().pipe(
+        map(spettacoli => spettacoli.filter(s => isFuturo(s)))
+    ),
     films: inject(FilmService).findAll()
   });
 };

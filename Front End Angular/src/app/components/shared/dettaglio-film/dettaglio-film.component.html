@@ -13,14 +13,14 @@
             </div>
 
         <div class="detail-copy">
-            <span class="tag">{{ generiLabel(film) }}</span>
+            <span class="tag">{{ film.nomeGeneri | generi }}</span>
             <h1>{{ film.titolo }}</h1>
             <p class="description">{{ film.descrizione }}</p>
 
             <div class="meta-grid">
                 <div>
                     <span>Durata</span>
-                    <strong>{{ durataLabel(film.durata) }}</strong>
+                    <strong>{{ film.durata | durata }}</strong>
                 </div>
                 <div>
                     <span>Cast</span>
@@ -38,13 +38,6 @@
             </div>
         </div>
 
-        @if (erroreAcquisto) {
-        <div class="status-card error">{{ erroreAcquisto }}</div>
-        }
-        @if (messaggioAcquisto) {
-        <div class="status-card success m-5">{{ messaggioAcquisto }}</div>
-        }
-
         @if (spettacoli.length === 0) {
         <div class="status-card">
             Nessuno spettacolo disponibile per questo film.
@@ -54,13 +47,13 @@
             @for (spettacolo of spettacoli; track spettacolo.id) {
             <article class="schedule-card">
                 <div>
-                    <p class="date">{{ dataLabel(spettacolo.data) }}</p>
+                    <p class="date">{{ spettacolo.data | date:'dd/MM/yyyy' }}</p>
                     <h3>{{ spettacolo.nomeSala }}</h3>
                     <p class="movie-meta">{{ spettacolo.postiRimanenti }} posti disponibili</p>
                 </div>
 
                 <div class="time-list">
-                    <span class="time">{{ orario(spettacolo.oraInizio) }} - {{ orario(spettacolo.oraFine) }}</span>
+                    <span class="time">{{ spettacolo.oraInizio | orario }} - {{ spettacolo.oraFine | orario }}</span>
                 </div>
 
                 @if (!isStaff) {

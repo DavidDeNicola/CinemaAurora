@@ -5,7 +5,7 @@
             <i class="bi bi-person"></i>
         </a>
 
-        @if (userRole === 'CLIENTE') {
+        @if (isCliente) {
             <a mat-list-item routerLink="i-miei-biglietti" routerLinkActive="active-link" matTooltip="Biglietti" matTooltipPosition="right">
                 <i class="bi bi-ticket"></i>
             </a>
@@ -17,7 +17,7 @@
             </div>
         }
 
-        @if (userRole === 'STAFF') {
+        @if (isStaff) {
             <a mat-list-item routerLink="gestione-generi" routerLinkActive="active-link" matTooltip="Generi" matTooltipPosition="right"><i class="bi bi-tags"></i></a>
             <a mat-list-item routerLink="gestione-film" routerLinkActive="active-link" matTooltip="Film" matTooltipPosition="right"><i class="bi bi-film"></i></a>
             <a mat-list-item routerLink="gestione-spettacoli" routerLinkActive="active-link" matTooltip="Spettacoli" matTooltipPosition="right"><i class="bi bi-calendar3-event"></i></a>
@@ -32,7 +32,7 @@
             </div>
         }
 
-        @if (userRole === 'SUPERADMIN') {
+        @if (isSuperAdmin) {
             <a mat-list-item routerLink="crea-staff" routerLinkActive="active-link" matTooltip="Crea-Staff" matTooltipPosition="right"><i class="bi bi-person-plus-fill"></i></a>
             <a mat-list-item routerLink="statistiche" routerLinkActive="active-link" matTooltip="Statistiche" matTooltipPosition="right"><i class="bi bi-bar-chart-line-fill"></i></a>
         }
@@ -41,12 +41,12 @@
 
 <mat-sidenav-container class="dashboard-container">
     <mat-sidenav
-        [mode]="isMobile() ? 'over' : 'side'"
-        [opened]="!isMobile()"
-        [disableClose]="!isMobile()"
+        [mode]="isMobile ? 'over' : 'side'"
+        [opened]="!isMobile"
+        [disableClose]="!isMobile"
         class="sidebar">
         <div class="chat-header">
-            @if (isMobile()) {
+            @if (isMobile) {
                 <!-- Telefono: il menu si apre già con le voci visibili -->
                 <ng-container *ngTemplateOutlet="vociMenu"></ng-container>
             } @else {
@@ -63,7 +63,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="dashboard-content">
-        @if (isMobile()) {
+        @if (isMobile) {
             <button class="btn btn-danger bi-list btn-menu-mobile" type="button" (click)="toggleMenu()" aria-label="Apri menu"></button>
         }
         <router-outlet></router-outlet>

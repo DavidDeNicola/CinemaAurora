@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { InsertUtenteDTO } from '../../../dto/utente/request/insert-utente-dto';
+import { Ruolo } from '../../../enums/ruolo';
 
 @Component({
   selector: 'app-registrazione',
@@ -17,7 +18,7 @@ export class RegistrazioneComponent {
     nome: '',
     cognome: '',
     email: '',
-    ruolo: 'CLIENTE',
+    ruolo: Ruolo.CLIENTE,
     telefono: ''
   };
 

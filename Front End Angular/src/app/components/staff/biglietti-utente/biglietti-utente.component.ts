@@ -31,8 +31,8 @@ export class BigliettiUtenteComponent {
       next: (res) =>{
         this.biglietti = res;
       },
-      error: (err) => {
-        console.error("Errore durante la ricerca dei biglietti", err);
+      error: () => {
+        this.confirmDialogService.notifyError('Impossibile recuperare i biglietti di questo utente.').subscribe();
       }
     });
   }
@@ -50,18 +50,17 @@ export class BigliettiUtenteComponent {
 
       const email = prompt("Inserisci l'email per confermare l'annullamento: ");
       if (!email || !email.trim()) {
-        alert("Email obbligatoria per procedere.");
+        this.confirmDialogService.notifyInfo('Email obbligatoria per procedere.').subscribe();
         return;
       }
 
       this.bigliettoService.removeById(idBiglietto, email.trim()).subscribe({
         next: () => {
-          alert('Biglietto eliminato con successo');
+          this.confirmDialogService.notifySuccess('Biglietto eliminato con successo.', 'Biglietto eliminato').subscribe();
           this.biglietti = this.biglietti.filter(b => b.id !== idBiglietto);
         },
         error: (err) => {
-          console.error("Errore durante l'eliminazione del biglietto", err);
-          alert("Impossibile eliminare il biglietto. Verifica che l'email inserita sia corretta.");
+          this.confirmDialogService.notifyError("Impossibile eliminare il biglietto. Verifica che l'email inserita sia corretta.").subscribe();
         }
       });
     });

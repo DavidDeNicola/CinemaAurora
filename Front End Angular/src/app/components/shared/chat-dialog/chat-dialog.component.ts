@@ -39,15 +39,16 @@ export class ChatDialogComponent implements OnInit {
     if (this.chatForm.valid) {
       this.chatService.creaChat(this.chatForm.value).subscribe({
         next: (response) => {
-          console.log("Prova");
           this.dialogRef.close();
           this.router.navigateByUrl('/assistenza-ticket');
         },
-        error: (error) => {
+        error: () => {
           this.dialogMessage = "Errore nell'apertura del ticket";
         }
-      })
+      });
+    } else {
+      // Mostra in rosso i campi obbligatori non compilati
+      this.chatForm.markAllAsTouched();
     }
-
   }
 }

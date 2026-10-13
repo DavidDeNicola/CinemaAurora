@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResponseSpettacoloDTO } from '../../../dto/spettacolo/response/response-spettacolo-dto';
@@ -11,16 +11,21 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ResponseSalaDTO} from "../../../dto/sala/response/response-sala-dto";
 import { ResponsePostoSpettacoloDto} from "../../../dto/post/response/response-posto-dto";
 import {PostoService} from "../../../services/posto.service";
+import { InsertBigliettoDTO } from "../../../dto/biglietto/request/insert-biglietto-dto";
+import { ConfirmDialogService } from "../../../services/confirm-dialog.service";
+import { DurataPipe } from '../../../pipes/durata.pipe';
+import { OrarioPipe } from '../../../pipes/orario.pipe';
 
 const PREZZI_TIPO_SALA: Record<Tipo, number> = {
   [Tipo.NORMALE]: 7,
   [Tipo.TRED]: 15,
   [Tipo.IMAX]: 10,
 };
+
 @Component({
   selector: 'app-acquisto-biglietto',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DurataPipe, OrarioPipe],
   templateUrl: './acquisto-biglietto.component.html',
   styleUrl: './acquisto-biglietto.component.css'
 })
@@ -28,9 +33,6 @@ export class AcquistoBigliettoComponent implements OnInit {
   film: ResponseFilmDTO;
   spettacolo: ResponseSpettacoloDTO;
   sala: ResponseSalaDTO;
-
-  @Output() chiudi = new EventEmitter<void>();
-  @Output() acquistoConfermato = new EventEmitter<ResponseBigliettoDTO[]>();
 
   mappaPosti: { [key: string]: any[] } = {};
   postiSelezionati: ResponsePostoSpettacoloDto[] = [];
@@ -48,6 +50,7 @@ export class AcquistoBigliettoComponent implements OnInit {
       private postoService: PostoService,
       private route: ActivatedRoute,
       private router: Router,
+      private confirmDialogService: ConfirmDialogService,
   ) {
     const extras = this.router.getCurrentNavigation()?.extras?.state;
     if (!extras || (extras && !extras?.['film'])) {
@@ -74,7 +77,6 @@ export class AcquistoBigliettoComponent implements OnInit {
   }
 
   caricaMappaPosti(): void {
-    console.log("Tentativo di recupero posti per Spettacolo ID:", this.spettacolo?.id);
     this.postoService.findBySpettacolo(this.spettacolo.id).subscribe({
       next: (posti) => {
         this.costruisciGriglia(posti);
@@ -112,26 +114,6 @@ export class AcquistoBigliettoComponent implements OnInit {
     return this.prezzoUnitario * this.numeroBiglietti;
   }
 
-
-  formatOrario(ora: string): string {
-    if (!ora) return '';
-    const timePart = ora.includes('T') ? ora.split('T')[1] :
-        ora.includes(' ') ? ora.split(' ')[1] : ora;
-    return timePart?.substring(0, 5) ?? '';
-  }
-
-  formatData(data: string): string {
-    if (!data) return '';
-    const d = new Date(data + 'T00:00:00');
-    return d.toLocaleDateString('it-IT', {weekday: 'long', day: '2-digit', month: 'long', year: 'numeric'});
-  }
-
-  durataLabel(durata: number): string {
-    if (!durata) return '';
-    const ore = Math.floor(durata / 60);
-    const minuti = durata % 60;
-    return ore ? `${ore}h ${minuti}m` : `${minuti}m`;
-  }
 
   chiudiModale(): void {
     this.router.navigateByUrl('/lista-spettacoli');
@@ -187,10 +169,10 @@ export class AcquistoBigliettoComponent implements OnInit {
     this.loading = true;
     this.errore = null;
 
-    const payload = {
+    const payload: InsertBigliettoDTO = {
       idSpettacolo: this.spettacolo.id,
-      idPosti: this.postiSelezionati.map((p: any) => p.id)
-    } as any;
+      idPosti: this.postiSelezionati.map(p => p.id)
+    };
 
     this.bigliettoService.insert(payload).subscribe({
       next: (biglietti: ResponseBigliettoDTO[]) => {
@@ -198,7 +180,11 @@ export class AcquistoBigliettoComponent implements OnInit {
 
         this.spettacolo.postiRimanenti = Math.max(0, this.spettacolo.postiRimanenti - this.numeroBiglietti);
 
-        this.acquistoConfermato.emit(biglietti);
+        this.confirmDialogService.notifySuccess(
+          biglietti.length === 1
+            ? 'Il tuo biglietto è stato acquistato con successo.'
+            : `I tuoi ${biglietti.length} biglietti sono stati acquistati con successo.`
+        ).subscribe();
         this.router.navigateByUrl('/i-miei-biglietti');
       },
       error: () => {

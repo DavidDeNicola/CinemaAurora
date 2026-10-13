@@ -8,10 +8,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const token = localStorage
-    .getItem("auth_token")
-    ?.replace(/^Bearer\s+/i, "")
-    .trim();
+  const token = authService.getToken();
+
+  // Il token serve solo per gli URL protetti dal backend
   const richiedeAuth =
     req.url.includes("/staff/") ||
     req.url.includes("/admin/") ||
@@ -30,12 +29,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return EMPTY;
   }
 
-  const copy = req.clone({
+  const richiestaConToken = req.clone({
     setHeaders: { Authorization: `Bearer ${token}` },
   });
 
   // token rifiutato dal backend (es. firmato con un'altra chiave)
-  return next(copy).pipe(
+  return next(richiestaConToken).pipe(
     catchError((errore: HttpErrorResponse) => {
       if (errore.status === 401) {
         authService.logout();
